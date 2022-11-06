@@ -1,18 +1,5 @@
 package com.example.nemsy;
 
-<<<<<<< HEAD
-import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-public class SignUpActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-    }
-=======
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -176,6 +163,5 @@ public class SignUpActivity extends AppCompatActivity {
 
 
 
-     }
->>>>>>> 9040f9822d2fe2282e9472073907b23c71ce1bbe
+    }
 }
