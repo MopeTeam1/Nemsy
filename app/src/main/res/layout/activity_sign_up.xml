@@ -21,6 +21,7 @@
 
     <ImageButton
         android:id="@+id/btn_back"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginStart="24dp"
@@ -30,7 +31,6 @@
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="?android:attr/borderlessButtonStyle"
         app:srcCompat="@drawable/backbtn" />
 
     <TextView
@@ -179,9 +179,9 @@
         android:text="이미 사용 중인 이메일 입니다."
         android:textColor="@color/warning"
         android:textSize="10sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/tv_email"
-        app:layout_constraintTop_toBottomOf="@+id/et_email"
-        android:visibility="invisible" />
+        app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
     <TextView
         android:id="@+id/tv_error_email_form"
@@ -191,9 +191,9 @@
         android:text="형식에 맞게 입력하세요."
         android:textColor="@color/warning"
         android:textSize="10sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/tv_email"
-        app:layout_constraintTop_toBottomOf="@+id/et_email"
-        android:visibility="invisible" />
+        app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
     <TextView
         android:id="@+id/tv_error_nickname"
@@ -203,9 +203,9 @@
         android:text="4자 이상 10자 이내로 입력하세요."
         android:textColor="@color/warning"
         android:textSize="10sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/tv_nickname"
-        app:layout_constraintTop_toBottomOf="@+id/et_nickname"
-        android:visibility="invisible" />
+        app:layout_constraintTop_toBottomOf="@+id/et_nickname" />
 
     <TextView
         android:id="@+id/tv_error_nickname_overlap"
@@ -227,9 +227,9 @@
         android:text="8~16자 영문자, 숫지, 특수문자를 사용하세요."
         android:textColor="@color/warning"
         android:textSize="10sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/tv_password"
-        app:layout_constraintTop_toBottomOf="@+id/et_password"
-        android:visibility="invisible" />
+        app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
     <TextView
         android:id="@+id/tv_error_repassword"
@@ -239,8 +239,8 @@
         android:text="비밀번호가 일치하지 않습니다."
         android:textColor="@color/warning"
         android:textSize="10sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/tv_repassword"
-        app:layout_constraintTop_toBottomOf="@+id/et_repassword"
-        android:visibility="invisible" />
+        app:layout_constraintTop_toBottomOf="@+id/et_repassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.w3c.dom.Text;
 
 import java.util.regex.Matcher;
@@ -22,7 +25,7 @@ import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
     ImageButton buttonBack;
-    AppCompatButton buttonRegister;
+    AppCompatButton signButton;
     TextView warningEmailOverlap, warningEmailForm, warningNicknameOverlap, warningNicknameForm, warningPassword, warningRePassword;
     EditText getEmail, getPassword, getNickname, getRePassword;
     String email, nickname, password, rePassword;
@@ -30,21 +33,37 @@ public class SignUpActivity extends AppCompatActivity {
     boolean isValidNicknameForm = false;
     boolean isValidPassword = false;
     boolean isValidRePassword = false;
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        getEmail = (EditText) findViewById(R.id.et_email);
+        getNickname = (EditText) findViewById(R.id.et_nickname);
+        getPassword = (EditText) findViewById(R.id.et_password);
+        getRePassword = (EditText) findViewById(R.id.et_repassword);
+
+        warningEmailOverlap = (TextView) findViewById(R.id.tv_error_email_overlap);
+        warningEmailForm = (TextView) findViewById(R.id.tv_error_email_form);
+        warningNicknameForm = (TextView) findViewById(R.id.tv_error_nickname);
+        warningPassword = (TextView) findViewById(R.id.tv_error_password);
+        warningRePassword = (TextView) findViewById(R.id.tv_error_repassword);
+        signButton = (AppCompatButton) findViewById(R.id.btn_signup);
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         // 타이틀바 제거
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
         // 회원가입 버튼 클릭 : 모든 가입 조건 충족 시 로그인 액티비티로 전환 (Main Activity)
-        buttonRegister = (AppCompatButton) findViewById(R.id.btn_signup);
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
+        signButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isValidEmailForm && isValidNicknameForm && isValidPassword && isValidRePassword){
+
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     startActivity(intent);
 
@@ -63,17 +82,6 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        getEmail = (EditText) findViewById(R.id.et_email);
-        getNickname = (EditText) findViewById(R.id.et_nickname);
-        getPassword = (EditText) findViewById(R.id.et_password);
-        getRePassword = (EditText) findViewById(R.id.et_repassword);
-
-        warningEmailOverlap = (TextView) findViewById(R.id.tv_error_email_overlap);
-        warningEmailForm = (TextView) findViewById(R.id.tv_error_email_form);
-        warningNicknameForm = (TextView) findViewById(R.id.tv_error_nickname);
-        warningPassword = (TextView) findViewById(R.id.tv_error_password);
-        warningRePassword = (TextView) findViewById(R.id.tv_error_repassword);
 
         // 이메일 중복 검사
 
@@ -160,8 +168,5 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 }

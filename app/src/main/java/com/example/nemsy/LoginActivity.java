@@ -20,12 +20,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
-    TextView loginError;
-    EditText et_email, et_password;
-    Button btn_login, btn_register;
-    ToggleButton showPassword;
+
+    TextView loginError = (TextView) findViewById(R.id.tv_error);
+    EditText et_password = (EditText) findViewById(R.id.et_password);
+    EditText et_email = (EditText) findViewById(R.id.et_email);
+    Button btn_login = (Button) findViewById(R.id.btn_login);
+    Button btn_register = (Button) findViewById(R.id.btn_login);
+    ToggleButton showPassword = (ToggleButton) findViewById(R.id.tbtn_eye);
+
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -35,26 +40,35 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // 타이틀바 제거
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        // 회원가입 버튼 클릭 시 회원가입 액티비티로 전환
-        btn_register = (Button) findViewById(R.id.btn_login);
-        btn_register.setOnClickListener(new View.OnClickListener() {
+        editTextWatcher();
+        clickEyeButton();
+        initSignUp();
+        initLogin();
+    }
+
+    private void editTextWatcher(){
+        // EditText 입력 변화 이벤트 처리
+        final TextWatcher textWatcher = new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
-        });
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (loginError.getVisibility() == View.VISIBLE) {
+                    loginError.setVisibility(View.INVISIBLE);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        };
+    }
 
-
-        et_email = (EditText) findViewById(R.id.et_email);
-        et_password = (EditText) findViewById(R.id.et_password);
-
+    private void clickEyeButton(){
         // 눈모양 토글 버튼 클릭 시 눈 이미지 변경 및 비밀번호 보이기/숨기기
-        showPassword = (ToggleButton) findViewById(R.id.tbtn_eye);
         showPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,30 +83,19 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        loginError = (TextView) findViewById(R.id.tv_error);
-
-        // EditText 입력 변화 이벤트 처리
-        final TextWatcher textWatcher = new TextWatcher() {
+    private void initSignUp(){
+        btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
+        });
+    }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                if (loginError.getVisibility() == View.VISIBLE) {
-                    loginError.setVisibility(View.INVISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        };
-
-        // 로그인 버튼 클릭 시
-        btn_login = (Button) findViewById(R.id.btn_login);
+    private void initLogin(){
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +115,5 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
-
     }
 }
