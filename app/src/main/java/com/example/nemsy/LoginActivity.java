@@ -24,12 +24,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextView loginError = (TextView) findViewById(R.id.tv_error);
-    EditText et_password = (EditText) findViewById(R.id.et_password);
-    EditText et_email = (EditText) findViewById(R.id.et_email);
-    Button btn_login = (Button) findViewById(R.id.btn_login);
-    Button btn_register = (Button) findViewById(R.id.btn_login);
-    ToggleButton showPassword = (ToggleButton) findViewById(R.id.tbtn_eye);
+    TextView loginError ;
+    EditText et_password ;
+    EditText et_email ;
+    Button btn_login ;
+    Button btn_register ;
+    ToggleButton showPassword ;
 
     private FirebaseAuth firebaseAuth;
 
@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void editTextWatcher(){
+        loginError = (TextView) findViewById(R.id.tv_error);
         // EditText 입력 변화 이벤트 처리
         final TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -68,6 +69,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void clickEyeButton(){
+        showPassword= (ToggleButton) findViewById(R.id.tbtn_eye);
+        et_password = (EditText) findViewById(R.id.et_password);
         // 눈모양 토글 버튼 클릭 시 눈 이미지 변경 및 비밀번호 보이기/숨기기
         showPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initSignUp(){
+        btn_register = (Button) findViewById(R.id.btn_login);
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +100,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initLogin(){
+        et_password = (EditText) findViewById(R.id.et_password);
+        et_email = (EditText) findViewById(R.id.et_email);
+        btn_login = (Button) findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,4 +123,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 }

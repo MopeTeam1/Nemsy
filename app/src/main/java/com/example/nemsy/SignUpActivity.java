@@ -65,12 +65,10 @@ public class SignUpActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        // 회원가입 버튼 클릭 : 모든 가입 조건 충족 시 로그인 액티비티로 전환 (Main Activity)
         signButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-
-                if (isValidEmailForm && isValidNicknameForm && isValidPassword && isValidRePassword){
 
                     String email = getEmail.getText().toString().trim();
                     String password = getPassword.getText().toString().trim();
@@ -96,22 +94,17 @@ public class SignUpActivity extends AppCompatActivity {
                                 DatabaseReference reference = database.getReference("Users");
                                 reference.child(uid).setValue(hashmap);
 
+                                Toast.makeText(SignUpActivity.this,"회원가입에 성공",Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                                 startActivity(intent);
                                 finish();
-                                Toast.makeText(SignUpActivity.this,"회원가입에 성공",Toast.LENGTH_SHORT).show();
 
                             }else{
                                 Toast.makeText(SignUpActivity.this, "이미 존재하는 아이디 입니다.", Toast.LENGTH_SHORT).show();
-                                return; //해당 메소드 진행을 멈추고 빠져나감
+//                                return; //해당 메소드 진행을 멈추고 빠져나감
                             }
                         }
                     });
-
-
-                    // 이메일 중복 검사 기능 추가시 isValidEmailOverlap 추가
-                } else{
-                }
             }
         });
 
