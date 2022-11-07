@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,9 +57,6 @@ public class BillListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new BillAdapter();
 
-        adapter.addItem(new Bill("집합건물의 소유 및 관리에 관한 법률 일부개정법률안", "2020-05-22", "21", "http://likms.assembly.go.kr/bill/billDetail.do?billId=PRC_K2F0C0Y5B2D2C1Z5B2F6T4S2K9N8V8&ageFrom=20&ageTo=20", "김병관의원 등 13인"));
-        adapter.addItem(new Bill("집합건물의 소유 및 관리에 관한 법률 일부개정법률안", "2020-05-22", "21", "http://likms.assembly.go.kr/bill/billDetail.do?billId=PRC_K2F0C0Y5B2D2C1Z5B2F6T4S2K9N8V8&ageFrom=20&ageTo=20", "김병관의원 등 13인"));
-
         recyclerView.setAdapter(adapter);
         makeRequest();
 
@@ -75,7 +73,7 @@ public class BillListFragment extends Fragment {
     }
 
     public void makeRequest() {
-        String url = "https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?KEY=a9d0d8e5551d4a738e4f0e22fa5a0c4d&Type=json&pIndex=1&pSize=2&AGE=20";
+        String url = "https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?KEY=a9d0d8e5551d4a738e4f0e22fa5a0c4d&Type=json&pIndex=1&pSize=5&AGE=20";
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
@@ -84,6 +82,7 @@ public class BillListFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         Log.d("응답", response);
+                        processResponse(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -101,5 +100,16 @@ public class BillListFragment extends Fragment {
         };
         request.setShouldCache(false);
         requestQueue.add(request);
+    }
+
+    public void processResponse(String response) {
+        Gson gson = new Gson();
+        BillResponse billResponse = gson.fromJson(response, BillResponse.class);
+
+        for(int i=0; i<billResponse.nzmimeepazxkubdpn.get(1).row.size(); i++) {
+            Bill bill = billResponse.nzmimeepazxkubdpn.get(1).row.get(i);
+            adapter.addItem(bill);
+        }
+        adapter.notifyDataSetChanged();
     }
 }

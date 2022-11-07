@@ -84,10 +84,10 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> im
         }
 
         public void setItem(Bill item) {
-            name.setText(item.getName());
-            age.setText(item.getAge() + "대");
-            proposer.setText(item.getProposer());
-            date.setText(item.getDate());
+            name.setText(item.BILL_NAME);
+            age.setText(item.AGE + "대");
+            proposer.setText(item.PROPOSER);
+            date.setText(item.PROPOSE_DT);
         }
     }
 }
