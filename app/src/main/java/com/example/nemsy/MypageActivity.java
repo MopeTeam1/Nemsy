@@ -152,11 +152,13 @@ public class MypageActivity extends AppCompatActivity {
                     String key = userSnapshot.getKey();
                     Log.d("Database", "key: " + key.toString().trim());
                     Log.d("Database", "UserId " + user.getUid().toString().trim());
-                    if (key.toString().trim() == user.getUid().toString().trim()){
+                    if (key.toString().trim().equals(user.getUid().toString().trim())){
                         HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
-                        String currNickname = userInfo.get("nickname").toString();
-                        Log.d("Database", "curr: " + currNickname);
-                        tv_nickname.setText(currNickname);
+                        Log.d("Database", "currNick: " + userInfo.get("nickname"));
+                        HashMap<String, Object> nickname = userInfo.get("nickname");
+//                        String currNickname = userInfo.get("nickname").toString();
+//                        Log.d("Database", "curr: " + currNickname);
+//                        tv_nickname.setText(currNickname);
                         break;
                     }
 //                    Log.d("Database", "value: " + userInfo);
