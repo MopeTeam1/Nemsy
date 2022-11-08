@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MypageActivity extends AppCompatActivity {
+
     Dialog nicknameDialog;
     Dialog logoutDialog;
     ImageButton btn_changeNickname;
