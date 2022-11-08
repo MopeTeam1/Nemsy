@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +50,8 @@ public class MypageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypage);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        init();
 
         btn_changeNickname = (ImageButton) findViewById(R.id.btn_change_nickname);
         btn_Logout = (Button) findViewById(R.id.btn_logout);
@@ -131,22 +134,33 @@ public class MypageActivity extends AppCompatActivity {
         });
     }
 
-    private void initNickname(){
+    private void init(){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d("Database", "currUserId " + user.getUid());
+        tv_nickname = (TextView) findViewById(R.id.tv_nickname);
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("Users");
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String value = snapshot.getValue().toString();
-                Log.d("Database", "Value is: " + value);
+                Log.d("Database", "AllUserInfo: " + value);
                 for (DataSnapshot userSnapshot: snapshot.getChildren()) {
                     String key = userSnapshot.getKey();
-                    Log.d("Database", "key: " + key);
-                    HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
-                    Log.d("Database", "value: " + userInfo);
-                    Log.d("Database", "value: " + userInfo.get("password"));
-//                  String[] getData = {userInfo.get("uid").get("email").toString(), userInfo.get("uid").get("password").toString()};
-//                  Log.d("Database", "getData[0]: " + getData[0]);
+                    Log.d("Database", "key: " + key.toString().trim());
+                    Log.d("Database", "UserId " + user.getUid().toString().trim());
+                    if (key.toString().trim() == user.getUid().toString().trim()){
+                        HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
+                        String currNickname = userInfo.get("nickname").toString();
+                        Log.d("Database", "curr: " + currNickname);
+                        tv_nickname.setText(currNickname);
+                        break;
+                    }
+//                    Log.d("Database", "value: " + userInfo);
+//                    Log.d("Database", "value: " + userInfo.get("password"));
                 }
             }
 
