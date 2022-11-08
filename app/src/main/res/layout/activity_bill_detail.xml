@@ -50,12 +50,12 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="208dp"
             android:fontFamily="@font/intel_bold"
+            android:text="제안자"
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="제안자" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/all_propose_title"
@@ -63,11 +63,11 @@
             android:layout_height="14dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/intel_bold"
+            android:text="공동발의자"
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@id/propose_title"
-            app:layout_constraintTop_toBottomOf="@id/propose_title"
-            tools:text="공동발의자" />
+            app:layout_constraintTop_toBottomOf="@id/propose_title" />
 
         <TextView
             android:id="@+id/age_title"
@@ -75,11 +75,11 @@
             android:layout_height="14dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/intel_bold"
+            android:text="대수"
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@id/all_propose_title"
-            app:layout_constraintTop_toBottomOf="@id/all_propose"
-            tools:text="대수" />
+            app:layout_constraintTop_toBottomOf="@id/all_propose" />
 
         <TextView
             android:id="@+id/propose_date_title"
@@ -87,11 +87,11 @@
             android:layout_height="14dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/intel_bold"
+            android:text="제안일자"
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@id/age_title"
-            app:layout_constraintTop_toBottomOf="@id/age_title"
-            tools:text="제안일자" />
+            app:layout_constraintTop_toBottomOf="@id/age_title" />
 
         <TextView
             android:id="@+id/status_title"
@@ -99,11 +99,11 @@
             android:layout_height="14dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/intel_bold"
+            android:text="처리상태"
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@id/propose_date_title"
-            app:layout_constraintTop_toBottomOf="@id/propose_date_title"
-            tools:text="처리상태" />
+            app:layout_constraintTop_toBottomOf="@id/propose_date_title" />
 
         <TextView
             android:id="@+id/propose"
@@ -165,7 +165,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/propose_date"
             app:layout_constraintTop_toBottomOf="@id/propose_date"
-            tools:text="미확인" />
+            tools:text="접수" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
