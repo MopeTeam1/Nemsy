@@ -175,7 +175,7 @@ public class SignUpActivity extends AppCompatActivity {
                     warningPassword.setVisibility(View.INVISIBLE);
                 } else {
                     password = getPassword.getText().toString();
-                    isValidPassword= Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[~!@#$%^&*()+=]).{8,16}$",password);
+                    isValidPassword= Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,15}.$",password);
 
                     // 비밀번호 형식이 맞지 않을 시 경고 메세지 보이기
                     if(isValidPassword){

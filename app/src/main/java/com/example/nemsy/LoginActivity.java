@@ -107,6 +107,17 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private boolean checkPassword(EditText passwordEditText){
+        et_password = (EditText) findViewById(R.id.et_password);
+        String passwordValidation = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,15}.$";
+        String password = et_password.getText().toString().trim();
+        if (password.matches(passwordValidation)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private void initLogin(){
         et_password = (EditText) findViewById(R.id.et_password);
         et_email = (EditText) findViewById(R.id.et_email);
@@ -117,6 +128,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = et_email.getText().toString().trim();
                 String password = et_password.getText().toString().trim();
+
+                if(email.length()<=3){
+                    Toast.makeText(LoginActivity.this, "이메일을 올바르게 입력하세요.", Toast.LENGTH_SHORT).show();
+                    et_email.requestFocus();
+                    return;
+                }
+                if((password.length()<=7)||(password.length()>=17)||(!checkPassword(et_password))){
+                    Toast.makeText(LoginActivity.this, "영문, 숫자, 특수문자를 포함해서 비밀번호를 올바르게 입력하세요(8자-16자).", Toast.LENGTH_SHORT).show();
+                    et_password.requestFocus();
+                    return;
+                }
 
 //                FirebaseDatabase database = FirebaseDatabase.getInstance();
 //                DatabaseReference reference = database.getReference("Users");
