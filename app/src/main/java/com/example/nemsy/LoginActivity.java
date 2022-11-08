@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -109,6 +118,33 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = et_email.getText().toString().trim();
                 String password = et_password.getText().toString().trim();
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference reference = database.getReference("Users");
+
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String value = snapshot.getValue().toString();
+                        Log.d("Database", "Value is: " + value);
+                        for (DataSnapshot userSnapshot: snapshot.getChildren()) {
+                            String key = userSnapshot.getKey();
+                            Log.d("Database", "key: " + key);
+                            HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
+                            Log.d("Database", "value: " + userInfo);
+                            Log.d("Database", "value: " + userInfo.get("password"));
+
+//                            String[] getData = {userInfo.get("uid").get("email").toString(), userInfo.get("uid").get("password").toString()};
+//                            Log.d("Database", "getData[0]: " + getData[0]);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
