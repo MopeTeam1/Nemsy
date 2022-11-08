@@ -89,11 +89,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initSignUp(){
-        btn_register = (Button) findViewById(R.id.btn_login);
+        btn_register = (Button) findViewById(R.id.btn_register);
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
@@ -103,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         et_password = (EditText) findViewById(R.id.et_password);
         et_email = (EditText) findViewById(R.id.et_email);
         btn_login = (Button) findViewById(R.id.btn_login);
+
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

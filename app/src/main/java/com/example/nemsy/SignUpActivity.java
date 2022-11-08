@@ -72,6 +72,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     String email = getEmail.getText().toString().trim();
                     String password = getPassword.getText().toString().trim();
+                    String nickname = getNickname.getText().toString().trim();
 
                     firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -89,6 +90,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                                 hashmap.put("uid",uid);
                                 hashmap.put("email",email);
+                                hashmap.put("nickname", nickname);
+                                hashmap.put("password", password);
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference = database.getReference("Users");
