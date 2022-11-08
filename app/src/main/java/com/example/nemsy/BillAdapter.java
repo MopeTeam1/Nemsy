@@ -53,6 +53,8 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> im
         this.items = items;
     }
 
+    public void clearItem() { items.clear(); }
+
     public Bill getItem(int position) {
         return items.get(position);
     }

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -30,6 +31,7 @@ public class BillListFragment extends Fragment {
 
     BillAdapter adapter;
     ArrayList ages = new ArrayList();
+    String requestAge = "21";
 
     static RequestQueue requestQueue;
 
@@ -52,13 +54,26 @@ public class BillListFragment extends Fragment {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                requestAge = ages.get(i).toString().substring(0, 2);
+                adapter.clearItem();
+                makeRequest();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         // recyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new BillAdapter();
 
         recyclerView.setAdapter(adapter);
-        makeRequest();
 
         adapter.setOnItemClickListener(new OnBillItemClickListener() {
             @Override
@@ -73,7 +88,7 @@ public class BillListFragment extends Fragment {
     }
 
     public void makeRequest() {
-        String url = "https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?KEY=a9d0d8e5551d4a738e4f0e22fa5a0c4d&Type=json&pIndex=1&pSize=5&AGE=20";
+        String url = "https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?KEY=a9d0d8e5551d4a738e4f0e22fa5a0c4d&Type=json&pIndex=1&pSize=100&AGE=" + requestAge;
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
