@@ -5,329 +5,343 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/back_button"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginStart="24dp"
-        android:background="@color/white"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@id/bill_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/bill_name"
-        app:srcCompat="@drawable/button_back" />
-
-    <TextView
-        android:id="@+id/bill_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:fontFamily="@font/intel_bold"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@id/back_button"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="국가정보원직원법 일부개정법률안" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bill_layout"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/round_square"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bill_name">
-
-        <TextView
-            android:id="@+id/propose_title"
-            android:layout_width="56dp"
-            android:layout_height="14dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="208dp"
-            android:fontFamily="@font/intel_bold"
-            android:text="제안자"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/all_propose_title"
-            android:layout_width="56dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/intel_bold"
-            android:text="공동발의자"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@id/propose_title"
-            app:layout_constraintTop_toBottomOf="@id/propose_title" />
-
-        <TextView
-            android:id="@+id/age_title"
-            android:layout_width="56dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/intel_bold"
-            android:text="대수"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@id/all_propose_title"
-            app:layout_constraintTop_toBottomOf="@id/all_propose" />
-
-        <TextView
-            android:id="@+id/propose_date_title"
-            android:layout_width="56dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/intel_bold"
-            android:text="제안일자"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@id/age_title"
-            app:layout_constraintTop_toBottomOf="@id/age_title" />
-
-        <TextView
-            android:id="@+id/status_title"
-            android:layout_width="56dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/intel_bold"
-            android:text="처리상태"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@id/propose_date_title"
-            app:layout_constraintTop_toBottomOf="@id/propose_date_title" />
-
-        <TextView
-            android:id="@+id/propose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/intel_regular"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@id/propose_title"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="유상범" />
-
-        <TextView
-            android:id="@+id/all_propose"
-            android:layout_width="184dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/intel_regular"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@id/all_propose_title"
-            app:layout_constraintTop_toBottomOf="@id/propose"
-            tools:text="구자근,권성동,김병기,김성원,서일준,송언석,장동혁,조해진,주호영 " />
-
-        <TextView
-            android:id="@+id/propose_date"
-            android:layout_width="wrap_content"
-            android:layout_height="14dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/intel_regular"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@id/age"
-            app:layout_constraintTop_toBottomOf="@id/age"
-            tools:text="2022-11-01" />
-
-        <TextView
-            android:id="@+id/age"
-            android:layout_width="wrap_content"
-            android:layout_height="14dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/intel_regular"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@id/all_propose"
-            app:layout_constraintTop_toBottomOf="@id/all_propose"
-            tools:text="21" />
-
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="14dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/intel_regular"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/propose_date"
-            app:layout_constraintTop_toBottomOf="@id/propose_date"
-            tools:text="접수" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <TextView
-        android:id="@+id/bill_content"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="52dp"
-        android:fontFamily="@font/intel_regular"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bill_layout"
-        tools:text="국가정보원의 계급정년제도는 인사적체 완화와 조직활력 유지에 기여해 온 반면, 오랜 기간 동안 특정 분야에서 전문성을 쌓아온 우수한 직원들의 퇴직을 앞당기거나 직원들 간 과도한 승진 경쟁을 유발하는 원인으로 작용하면서, 조직의 전문성과 정보 역량에 막대한 손실을 초래하고, 조직화합을 저해하는 문제를 야기하고 있음." />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/like_dislike_layout"
-        android:layout_width="92dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="220dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bill_content">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="148dp"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/like_layout"
-            android:layout_width="44dp"
-            android:layout_height="24dp"
-            android:background="@drawable/button_like"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="140dp">
 
             <ImageButton
-                android:id="@+id/like_button"
-                style="?android:attr/borderlessButtonStyle"
+                android:id="@+id/back_button"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:background="@color/primary"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="40dp"
+                android:background="@color/white"
+                android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_like" />
+                app:srcCompat="@drawable/button_back" />
 
             <TextView
-                android:id="@+id/like_num"
-                android:layout_width="wrap_content"
+                android:id="@+id/bill_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="48dp"
                 android:fontFamily="@font/intel_bold"
-                android:textColor="@color/white"
-                android:textSize="8sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/like_button"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="100" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/dislike_layout"
-            android:layout_width="44dp"
-            android:layout_height="24dp"
-            android:background="@drawable/button_dislike"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/dislike_button"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:background="@color/primary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_dislike" />
-
-            <TextView
-                android:id="@+id/dislike_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/intel_bold"
-                android:textColor="@color/white"
-                android:textSize="8sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/dislike_button"
+                android:textColor="@color/black"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="20" />
+                tools:text="국가정보원직원법 일부개정법률안" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bill_layout"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/round_square"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bill_name">
+
+                <TextView
+                    android:id="@+id/propose_title"
+                    android:layout_width="56dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="208dp"
+                    android:fontFamily="@font/intel_bold"
+                    android:text="제안자"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/all_propose_title"
+                    android:layout_width="56dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/intel_bold"
+                    android:text="공동발의자"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@id/propose_title"
+                    app:layout_constraintTop_toBottomOf="@id/propose_title" />
+
+                <TextView
+                    android:id="@+id/age_title"
+                    android:layout_width="56dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/intel_bold"
+                    android:text="대수"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@id/all_propose_title"
+                    app:layout_constraintTop_toBottomOf="@id/all_propose" />
+
+                <TextView
+                    android:id="@+id/propose_date_title"
+                    android:layout_width="56dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/intel_bold"
+                    android:text="제안일자"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@id/age_title"
+                    app:layout_constraintTop_toBottomOf="@id/age_title" />
+
+                <TextView
+                    android:id="@+id/status_title"
+                    android:layout_width="56dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/intel_bold"
+                    android:text="처리상태"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@id/propose_date_title"
+                    app:layout_constraintTop_toBottomOf="@id/propose_date_title" />
+
+                <TextView
+                    android:id="@+id/propose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/intel_regular"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toEndOf="@id/propose_title"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="유상범" />
+
+                <TextView
+                    android:id="@+id/all_propose"
+                    android:layout_width="184dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/intel_regular"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toEndOf="@id/all_propose_title"
+                    app:layout_constraintTop_toBottomOf="@id/propose"
+                    tools:text="구자근,권성동,김병기,김성원,서일준,송언석,장동혁,조해진,주호영 " />
+
+                <TextView
+                    android:id="@+id/propose_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/intel_regular"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@id/age"
+                    app:layout_constraintTop_toBottomOf="@id/age"
+                    tools:text="2022-11-01" />
+
+                <TextView
+                    android:id="@+id/age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/intel_regular"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@id/all_propose"
+                    app:layout_constraintTop_toBottomOf="@id/all_propose"
+                    tools:text="21" />
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/intel_regular"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/propose_date"
+                    app:layout_constraintTop_toBottomOf="@id/propose_date"
+                    tools:text="접수" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <TextView
+                android:id="@+id/bill_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="52dp"
+                android:fontFamily="@font/intel_regular"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bill_layout"
+                tools:text="국가정보원의 계급정년제도는 인사적체 완화와 조직활력 유지에 기여해 온 반면, 오랜 기간 동안 특정 분야에서 전문성을 쌓아온 우수한 직원들의 퇴직을 앞당기거나 직원들 간 과도한 승진 경쟁을 유발하는 원인으로 작용하면서, 조직의 전문성과 정보 역량에 막대한 손실을 초래하고, 조직화합을 저해하는 문제를 야기하고 있음." />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/like_dislike_layout"
+                android:layout_width="92dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="220dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bill_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/like_layout"
+                    android:layout_width="44dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/button_like"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageButton
+                        android:id="@+id/like_button"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@color/primary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_like" />
+
+                    <TextView
+                        android:id="@+id/like_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/intel_bold"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/like_button"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="100" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/dislike_layout"
+                    android:layout_width="44dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/button_dislike"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageButton
+                        android:id="@+id/dislike_button"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@color/primary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_dislike" />
+
+                    <TextView
+                        android:id="@+id/dislike_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/intel_bold"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/dislike_button"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="20" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="288dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/primary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/like_dislike_layout" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/content_layout"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="66dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="65dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line">
+
+                <TextView
+                    android:id="@+id/comment_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/intel_bold"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="닉네임" />
+
+                <TextView
+                    android:id="@+id/comment_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="@font/intel_regular"
+                    android:textColor="@color/gray"
+                    android:textSize="8sp"
+                    app:layout_constraintBottom_toTopOf="@id/comment_content"
+                    app:layout_constraintStart_toEndOf="@id/comment_name"
+                    tools:text="10/31 2:50" />
+
+                <TextView
+                    android:id="@+id/comment_content"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/intel_regular"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@id/comment_name"
+                    app:layout_constraintTop_toBottomOf="@id/comment_name"
+                    tools:text="가나다라마바사아자차카타파하" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:id="@+id/line"
-        android:layout_width="288dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/primary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/like_dislike_layout" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/content_layout"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="66dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="65dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/line">
-
-        <TextView
-            android:id="@+id/comment_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/intel_bold"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="닉네임" />
-
-        <TextView
-            android:id="@+id/comment_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="6dp"
-            android:fontFamily="@font/intel_regular"
-            android:textColor="@color/gray"
-            android:textSize="8sp"
-            app:layout_constraintBottom_toTopOf="@id/comment_content"
-            app:layout_constraintStart_toEndOf="@id/comment_name"
-            tools:text="10/31 2:50" />
-
-        <TextView
-            android:id="@+id/comment_content"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/intel_regular"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@id/comment_name"
-            app:layout_constraintTop_toBottomOf="@id/comment_name"
-            tools:text="가나다라마바사아자차카타파하" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <EditText
         android:id="@+id/comment"
