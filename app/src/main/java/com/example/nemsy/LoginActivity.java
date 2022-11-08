@@ -60,21 +60,20 @@ public class LoginActivity extends AppCompatActivity {
 
     private void editTextWatcher(){
         loginError = (TextView) findViewById(R.id.tv_error);
+        et_password = (EditText) findViewById(R.id.et_password);
         // EditText 입력 변화 이벤트 처리
-        final TextWatcher textWatcher = new TextWatcher() {
+        et_password.addTextChangedListener(new TextWatcher() { // 아이디
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (loginError.getVisibility() == View.VISIBLE) {
-                    loginError.setVisibility(View.INVISIBLE);
-                }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loginError.setVisibility(View.INVISIBLE);
             }
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable s) {
             }
-        };
+        });
     }
 
     private void clickEyeButton(){
@@ -119,31 +118,31 @@ public class LoginActivity extends AppCompatActivity {
                 String email = et_email.getText().toString().trim();
                 String password = et_password.getText().toString().trim();
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference reference = database.getReference("Users");
-
-                reference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String value = snapshot.getValue().toString();
-                        Log.d("Database", "Value is: " + value);
-                        for (DataSnapshot userSnapshot: snapshot.getChildren()) {
-                            String key = userSnapshot.getKey();
-                            Log.d("Database", "key: " + key);
-                            HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
-                            Log.d("Database", "value: " + userInfo);
-                            Log.d("Database", "value: " + userInfo.get("password"));
-
-//                            String[] getData = {userInfo.get("uid").get("email").toString(), userInfo.get("uid").get("password").toString()};
-//                            Log.d("Database", "getData[0]: " + getData[0]);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+//                FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                DatabaseReference reference = database.getReference("Users");
+//
+//                reference.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        String value = snapshot.getValue().toString();
+//                        Log.d("Database", "Value is: " + value);
+//                        for (DataSnapshot userSnapshot: snapshot.getChildren()) {
+//                            String key = userSnapshot.getKey();
+//                            Log.d("Database", "key: " + key);
+//                            HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
+//                            Log.d("Database", "value: " + userInfo);
+//                            Log.d("Database", "value: " + userInfo.get("password"));
+//
+////                            String[] getData = {userInfo.get("uid").get("email").toString(), userInfo.get("uid").get("password").toString()};
+////                            Log.d("Database", "getData[0]: " + getData[0]);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
 
                 firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -153,7 +152,8 @@ public class LoginActivity extends AppCompatActivity {
 //                            firebaseAuth.addAuthStateListener(firebaseAuthListener);
                             startActivity(intent);
                         }else{
-                            Toast.makeText(LoginActivity.this,"로그인 실패",Toast.LENGTH_SHORT).show();
+                            loginError = (TextView) findViewById(R.id.tv_error);
+                            loginError.setVisibility(View.VISIBLE);
                         }
                     }
                 });
