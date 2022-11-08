@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         loginError = (TextView) findViewById(R.id.tv_error);
         et_password = (EditText) findViewById(R.id.et_password);
         // EditText 입력 변화 이벤트 처리
-        et_password.addTextChangedListener(new TextWatcher() { // 아이디
+        et_password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
