@@ -144,8 +144,12 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            Log.d("Database", "currUserId " + user.getUid());
+
                             Intent intent = new Intent(LoginActivity.this, MypageActivity.class); // 일단 Main으로 intent
-//                            firebaseAuth.addAuthStateListener(firebaseAuthListener);
+                            intent.putExtra("currUid", user.getUid());
                             startActivity(intent);
                         }else{
                             loginError = (TextView) findViewById(R.id.tv_error);

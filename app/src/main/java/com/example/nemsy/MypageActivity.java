@@ -1,9 +1,11 @@
 package com.example.nemsy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -11,6 +13,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class MypageActivity extends AppCompatActivity {
 
@@ -24,16 +35,20 @@ public class MypageActivity extends AppCompatActivity {
     Button btn_nicknameCancel;
     EditText changeNickname;
     TextView errorMessage;
+    TextView tv_nickname;
 
     //로그아웃 다이얼로그 관련
     Button btn_logoutConfirm;
     Button btn_logoutCancel;
 
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         btn_changeNickname = (ImageButton) findViewById(R.id.btn_change_nickname);
         btn_Logout = (Button) findViewById(R.id.btn_logout);
@@ -45,6 +60,7 @@ public class MypageActivity extends AppCompatActivity {
         btn_changeNickname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 showNicknameDialog();
             }
         });
@@ -56,6 +72,7 @@ public class MypageActivity extends AppCompatActivity {
         btn_Logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 showLogoutDialog();
             }
         });
@@ -112,6 +129,31 @@ public class MypageActivity extends AppCompatActivity {
                 nicknameDialog.dismiss();
             }
         });
+    }
 
+    private void initNickname(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("Users");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String value = snapshot.getValue().toString();
+                Log.d("Database", "Value is: " + value);
+                for (DataSnapshot userSnapshot: snapshot.getChildren()) {
+                    String key = userSnapshot.getKey();
+                    Log.d("Database", "key: " + key);
+                    HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
+                    Log.d("Database", "value: " + userInfo);
+                    Log.d("Database", "value: " + userInfo.get("password"));
+//                  String[] getData = {userInfo.get("uid").get("email").toString(), userInfo.get("uid").get("password").toString()};
+//                  Log.d("Database", "getData[0]: " + getData[0]);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
