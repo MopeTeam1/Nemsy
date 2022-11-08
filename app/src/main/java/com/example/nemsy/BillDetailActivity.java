@@ -2,6 +2,8 @@ package com.example.nemsy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +39,7 @@ public class BillDetailActivity extends AppCompatActivity {
         propose_date = (TextView) findViewById(R.id.propose_date);
         status = (TextView) findViewById(R.id.status);
         bill_content = (TextView) findViewById(R.id.bill_content);
+        RecyclerView recyclerView = findViewById(R.id.comments_recyclerView);
 
         Intent inIntent = getIntent();
         propose.setText(inIntent.getStringExtra("RST_PROPOSER"));
@@ -76,6 +79,12 @@ public class BillDetailActivity extends AppCompatActivity {
                 }
             }
         }.start();
+
+        // recyclerView
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        CommentAdapter adapter = new CommentAdapter();
+        recyclerView.setAdapter(adapter);
 
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
