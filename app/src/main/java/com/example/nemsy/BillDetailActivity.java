@@ -56,10 +56,14 @@ public class BillDetailActivity extends AppCompatActivity {
                 try {
                     doc = Jsoup.connect(detailLink).get();
                     Elements title = doc.select(".titCont");
-                    bundle.putString("title", title.text());
+                    int idxNo = title.text().indexOf("]");
+                    int idxproposer = title.text().indexOf("(");
+                    String billName = title.text().substring(idxNo+1, idxproposer);
+                    bundle.putString("title", billName);
 
                     Elements content = doc.select("#summaryContentDiv");
-                    bundle.putString("content", content.text());
+                    String contents = content.html().replace("<br> ", "");
+                    bundle.putString("content", contents);
 
                     Message msg = handler.obtainMessage();
                     msg.setData(bundle);
