@@ -140,32 +140,6 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-//                FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                DatabaseReference reference = database.getReference("Users");
-//
-//                reference.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        String value = snapshot.getValue().toString();
-//                        Log.d("Database", "Value is: " + value);
-//                        for (DataSnapshot userSnapshot: snapshot.getChildren()) {
-//                            String key = userSnapshot.getKey();
-//                            Log.d("Database", "key: " + key);
-//                            HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
-//                            Log.d("Database", "value: " + userInfo);
-//                            Log.d("Database", "value: " + userInfo.get("password"));
-//
-////                            String[] getData = {userInfo.get("uid").get("email").toString(), userInfo.get("uid").get("password").toString()};
-////                            Log.d("Database", "getData[0]: " + getData[0]);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-
                 firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

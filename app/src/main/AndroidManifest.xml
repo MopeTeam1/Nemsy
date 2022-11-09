@@ -16,8 +16,7 @@
         android:theme="@style/Theme.Nemsy"
         tools:targetApi="31"
         android:usesCleartextTraffic="true">
-        <activity
-android:name=".LoginActivity"
+        <activity android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
