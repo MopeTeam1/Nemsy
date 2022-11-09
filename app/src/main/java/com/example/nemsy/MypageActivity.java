@@ -155,7 +155,7 @@ public class MypageActivity extends AppCompatActivity {
                     if (key.toString().trim().equals(user.getUid().toString().trim())){
                         HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
                         Log.d("Database", "currNick: " + userInfo.get("nickname"));
-                        HashMap<String, Object> nickname = userInfo.get("nickname");
+//                        HashMap<String, Object> nickname = userInfo.get("nickname");
 //                        String currNickname = userInfo.get("nickname").toString();
 //                        Log.d("Database", "curr: " + currNickname);
 //                        tv_nickname.setText(currNickname);
