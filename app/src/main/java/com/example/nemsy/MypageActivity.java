@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -81,7 +82,6 @@ public class MypageActivity extends AppCompatActivity {
         btn_Logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 showLogoutDialog();
             }
         });
@@ -97,13 +97,16 @@ public class MypageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //로그인 창으로 돌아가기
-                logoutDialog.dismiss();
+                firebaseAuth.signOut();
+                Intent intent = new Intent(MypageActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 
         btn_logoutCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 logoutDialog.dismiss();
             }
         });
