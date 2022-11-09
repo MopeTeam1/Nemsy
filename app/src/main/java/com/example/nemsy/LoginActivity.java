@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class); // 일단 Main으로 intent
+                            Intent intent = new Intent(LoginActivity.this, BottomNavActivity.class); // 일단 Main으로 intent
 //                            firebaseAuth.addAuthStateListener(firebaseAuthListener);
                             startActivity(intent);
                         }else{
