@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -142,6 +143,10 @@ public class MypageActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("Users");
+        SharedPreferences pref = getSharedPreferences("person_info", 0); // 프레퍼런스
+        SharedPreferences.Editor editor = pref.edit();
+        String currUID = pref.getString("currUID",user.getUid());
+        Log.d("Database", "prefCurrUID: " + currUID);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -150,11 +155,14 @@ public class MypageActivity extends AppCompatActivity {
                 Log.d("Database", "AllUserInfo: " + value);
                 for (DataSnapshot userSnapshot: snapshot.getChildren()) {
                     String key = userSnapshot.getKey();
-                    Log.d("Database", "key: " + key.toString().trim());
-                    Log.d("Database", "UserId " + user.getUid().toString().trim());
+//                    Log.d("Database", "key: " + key.toString().trim());
+//                    Log.d("Database", "UserId " + user.getUid().toString().trim());
                     if (key.toString().trim().equals(user.getUid().toString().trim())){
                         HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
                         Log.d("Database", "currNick: " + userInfo.get("nickname"));
+                        tv_nickname.setText(userInfo.get("nickname")+"");
+
+
 //                        HashMap<String, Object> nickname = userInfo.get("nickname");
 //                        String currNickname = userInfo.get("nickname").toString();
 //                        Log.d("Database", "curr: " + currNickname);
