@@ -1,6 +1,7 @@
 package com.example.nemsy;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -38,6 +39,7 @@ public class MypageActivity extends AppCompatActivity {
     EditText changeNickname;
     TextView errorMessage;
     TextView tv_nickname;
+    TextView tv_email;
 
     //로그아웃 다이얼로그 관련
     Button btn_logoutConfirm;
@@ -51,6 +53,9 @@ public class MypageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypage);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         init();
 
@@ -137,15 +142,15 @@ public class MypageActivity extends AppCompatActivity {
 
     private void init(){
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.d("Database", "currUserId " + user.getUid());
         tv_nickname = (TextView) findViewById(R.id.tv_nickname);
+        tv_email = (TextView) findViewById(R.id.tv_email);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("Users");
+
         SharedPreferences pref = getSharedPreferences("person_info", 0); // 프레퍼런스
         SharedPreferences.Editor editor = pref.edit();
-        String currUID = pref.getString("currUID",user.getUid());
+        String currUID = pref.getString("currUID","");
         Log.d("Database", "prefCurrUID: " + currUID);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -155,14 +160,13 @@ public class MypageActivity extends AppCompatActivity {
                 Log.d("Database", "AllUserInfo: " + value);
                 for (DataSnapshot userSnapshot: snapshot.getChildren()) {
                     String key = userSnapshot.getKey();
-//                    Log.d("Database", "key: " + key.toString().trim());
-//                    Log.d("Database", "UserId " + user.getUid().toString().trim());
-                    if (key.toString().trim().equals(user.getUid().toString().trim())){
+                    if (key.toString().trim().equals(currUID.toString().trim())){
                         HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
                         Log.d("Database", "currNick: " + userInfo.get("nickname"));
                         tv_nickname.setText(userInfo.get("nickname")+"");
+                        tv_email.setText(userInfo.get("email")+"");
 
-
+//                        Log.d("Database", "key: " + key.toString().trim());
 //                        HashMap<String, Object> nickname = userInfo.get("nickname");
 //                        String currNickname = userInfo.get("nickname").toString();
 //                        Log.d("Database", "curr: " + currNickname);
