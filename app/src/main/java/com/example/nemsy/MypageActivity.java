@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 
 public class MypageActivity extends AppCompatActivity {
 
+    private ImageButton bill_icon, mypage_icon;
     Dialog nicknameDialog;
     Dialog logoutDialog;
     ImageButton btn_changeNickname;
@@ -51,6 +53,9 @@ public class MypageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
+
+        bill_icon = (ImageButton) findViewById(R.id.bill_icon);
+        mypage_icon = (ImageButton) findViewById(R.id.mypage_icon);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -85,6 +90,27 @@ public class MypageActivity extends AppCompatActivity {
                 showLogoutDialog();
             }
         });
+
+        bill_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                Intent intent = new Intent(getApplicationContext(), BottomNavActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mypage_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(0, 0);
+                Intent intent = getIntent();
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
+
     }
 
     private void showLogoutDialog() {
