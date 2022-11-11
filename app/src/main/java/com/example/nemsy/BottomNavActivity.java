@@ -41,6 +41,7 @@ public class BottomNavActivity extends AppCompatActivity {
 
     public void onFragmentChanged(Bill item) {
         Intent intent = new Intent(getApplicationContext(), BillDetailActivity.class);
+        intent.putExtra("BILL_ID", item.BILL_ID);
         intent.putExtra("DETAIL_LINK", item.DETAIL_LINK);
         intent.putExtra("RST_PROPOSER", item.RST_PROPOSER);
         intent.putExtra("PUBL_PROPOSER", item.PUBL_PROPOSER);
