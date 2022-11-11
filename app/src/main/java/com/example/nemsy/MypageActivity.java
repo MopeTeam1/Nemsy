@@ -153,6 +153,39 @@ public class MypageActivity extends AppCompatActivity {
                     errorMessage.setText("4자 이상 10자 이내로 입력해주세요");
                 }
                 else {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference = database.getReference("Users");
+
+                    SharedPreferences pref = getSharedPreferences("person_info", 0); // 프레퍼런스
+                    String currUID = pref.getString("currUID","");
+                    Log.d("Database", "prefCurrUID: " + currUID);
+
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String value = snapshot.getValue().toString();
+                            Log.d("Database", "AllUserInfo: " + value);
+                            for (DataSnapshot userSnapshot: snapshot.getChildren()) {
+                                String key = userSnapshot.getKey();
+                                if (key.toString().trim().equals(currUID.toString().trim())){
+                                    HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
+                                    Log.d("Database", "currNick: " + userInfo.get("nickname"));
+                                    tv_nickname.setText(userInfo.get("nickname")+"");
+                                    tv_email.setText(userInfo.get("email")+"");
+                                    break;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
+
+
                     //회원정보의 닉네임 바꿔주기
                     Toast.makeText(getApplicationContext(),"닉네임이 성공적으로 변경되었습니다",Toast.LENGTH_SHORT).show();
                     nicknameDialog.dismiss();
