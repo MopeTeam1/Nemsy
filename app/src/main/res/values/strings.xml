@@ -10,6 +10,4 @@
     <string name="NicknameChange">닉네임 변경</string>
     <string name="error">에러 메세지</string>
     <string name="logoutDetail">로그아웃 하시겠습니까?\n로그인 페이지로 돌아갑니다.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
