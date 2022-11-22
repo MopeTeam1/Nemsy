@@ -38,6 +38,8 @@
         android:layout_marginStart="52dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="발의법률안 명"
         android:textColor="@color/black"
         android:textSize="14dp"
