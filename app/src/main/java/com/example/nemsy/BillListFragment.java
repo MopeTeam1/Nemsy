@@ -80,7 +80,7 @@ public class BillListFragment extends Fragment {
             public void onItemClick(BillAdapter.ViewHolder holder, View view, int position) {
                 Bill item = adapter.getItem(position);
                 BottomNavActivity activity = (BottomNavActivity) getActivity();
-                activity.onFragmentChanged(item);
+                activity.putExtraToIntent(item);
             }
         });
 
