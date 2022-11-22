@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BottomNavActivity extends AppCompatActivity {
@@ -17,6 +18,10 @@ public class BottomNavActivity extends AppCompatActivity {
 
         bill_icon = (ImageButton) findViewById(R.id.bill_icon);
         mypage_icon = (ImageButton) findViewById(R.id.mypage_icon);
+
+        // 액션바 제거
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         bill_icon.setOnClickListener(new View.OnClickListener() {
             @Override
