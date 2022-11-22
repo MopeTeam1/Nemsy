@@ -111,13 +111,12 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        // Back(<) 버튼 클릭 시 로그인 액티비티로 전환 (Main Activity)
+        // Back(<) 버튼 클릭 시 로그인 액티비티로 전환 (Login Activity)
         buttonBack = (ImageButton) findViewById(R.id.btn_back);
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
