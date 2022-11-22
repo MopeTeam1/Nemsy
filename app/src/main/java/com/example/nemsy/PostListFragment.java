@@ -1,10 +1,28 @@
 package com.example.nemsy;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class PostListFragment extends Fragment {
 
     PostAdapter adapter;
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_post_list, container, false);
+        RecyclerView recyclerView = rootView.findViewById(R.id.postRecyclerView);
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new PostAdapter();
+        recyclerView.setAdapter(adapter);
+
+        return rootView;
+    }
 }
