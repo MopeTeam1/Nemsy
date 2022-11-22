@@ -6,13 +6,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CommunityDetailActivity extends AppCompatActivity {
-    private ImageButton back_button, bill_icon, mypage_icon, community_icon, likeBtn, dislikeBtn;
+    private ImageButton back_button, bill_icon, mypage_icon, community_icon, likeBtn, dislikeBtn, sendBtn;
     private TextView title, writer, writtenDate, content, likeNum, dislikeNum;
     private boolean isLiked, isDisliked;
 
@@ -35,6 +40,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         bill_icon = (ImageButton) findViewById(R.id.bill_icon);
         mypage_icon = (ImageButton) findViewById(R.id.mypage_icon);
         // communityBtn = (ImageButton) findViewById(R.id.community_icon);
+        sendBtn = (ImageButton) findViewById(R.id.send_button);
 
         title = (TextView) findViewById(R.id.title);
         writer = (TextView) findViewById(R.id.writer);
@@ -57,6 +63,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {finish();}
         });
+
 
         // navigation
         bill_icon.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +94,8 @@ public class CommunityDetailActivity extends AppCompatActivity {
         });
 
          */
+
+
 
     }
 }
