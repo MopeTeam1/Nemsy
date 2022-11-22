@@ -4,4 +4,7 @@ import androidx.fragment.app.Fragment;
 
 public class PostListFragment extends Fragment {
 
+    PostAdapter adapter;
+
+
 }

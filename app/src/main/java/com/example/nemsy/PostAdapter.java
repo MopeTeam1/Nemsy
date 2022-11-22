@@ -18,13 +18,13 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product,parent,false);
-        return new ViewHolderProduct(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item,parent,false);
+        return new ViewHolderPost(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((ViewHolderProduct)holder).onBind(listData.get(position));
+        ((ViewHolderPost)holder).onBind(listData.get(position));
     }
 
     @Override
@@ -32,15 +32,8 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return listData.size();
     }
 
-    public void addItem(Product data) {
+    public void addItem(Post data) {
         listData.add(data);
     }
 }
-Footer
-        © 2022 GitHub, Inc.
-        Footer navigation
-        Terms
-        Privacy
-        Security
-        Status
 
