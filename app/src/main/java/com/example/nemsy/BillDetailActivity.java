@@ -1,6 +1,7 @@
 package com.example.nemsy;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +49,10 @@ public class BillDetailActivity extends AppCompatActivity {
         if(inIntent.getStringExtra("PROC_RESULT") == null) {
             status.setText("접수");
         }
+
+        // 액션바 제거
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         // 웹 크롤링
         String detailLink = inIntent.getStringExtra("DETAIL_LINK");
