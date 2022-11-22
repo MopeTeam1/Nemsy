@@ -5,14 +5,38 @@
     android:layout_height="wrap_content">
 
     <ImageButton
-        android:id="@+id/bill_icon"
+        android:id="@+id/community_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
+        android:layout_marginStart="40dp"
         android:background="@android:color/transparent"
         android:padding="15dp"
         android:src="@drawable/ic_nav_bill"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/community_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="16dp"
+        android:text="커뮤니티"
+        android:textColor="@color/primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/community_icon"
+        app:layout_constraintStart_toStartOf="@id/community_icon"
+        app:layout_constraintTop_toTopOf="@id/community_icon" />
+
+    <ImageButton
+        android:id="@+id/bill_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:padding="15dp"
+        android:src="@drawable/ic_nav_bill"
+        app:layout_constraintEnd_toEndOf="@id/mypage_icon"
+        app:layout_constraintStart_toStartOf="@id/community_icon"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -32,7 +56,7 @@
         android:id="@+id/mypage_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="76dp"
+        android:layout_marginEnd="40dp"
         android:background="@android:color/transparent"
         android:padding="15dp"
         android:src="@drawable/ic_nav_mypage"
