@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -144,8 +145,13 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            SharedPreferences pref = getSharedPreferences("person_info", 0); // 프레퍼런스
+                            SharedPreferences.Editor editor = pref.edit();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                            editor.putString("currUID", user.getUid());
+                            editor.apply();
                             Intent intent = new Intent(LoginActivity.this, BottomNavActivity.class); // 일단 Main으로 intent
-//                            firebaseAuth.addAuthStateListener(firebaseAuthListener);
                             startActivity(intent);
                         }else{
                             loginError = (TextView) findViewById(R.id.tv_error);

@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Nemsy</string>
+    <string name="myInfo">내 정보</string>
+    <string name="nickname">테스트닉네임</string>
+    <string name="email">example@gmail.com</string>
+    <string name="activity">내가 쓴 글</string>
+    <string name="logout">로그아웃</string>
+    <string name="confirm">확인</string>
+    <string name="cancel">취소</string>
+    <string name="NicknameChange">닉네임 변경</string>
+    <string name="error">에러 메세지</string>
+    <string name="logoutDetail">로그아웃 하시겠습니까?\n로그인 페이지로 돌아갑니다.</string>
 </resources>

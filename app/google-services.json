@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1059196713018",
+    "firebase_url": "https://nemsy-22532-default-rtdb.firebaseio.com",
+    "project_id": "nemsy-22532",
+    "storage_bucket": "nemsy-22532.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059196713018:android:896642ecad865312581d03",
+        "android_client_info": {
+          "package_name": "com.example.nemsy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059196713018-vfgcbj27q428kuudfonv7rd849iajjbe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1DxaPasMTQEL-TViB5zPUhNQIHyiLPbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059196713018-vfgcbj27q428kuudfonv7rd849iajjbe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
