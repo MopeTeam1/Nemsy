@@ -11,7 +11,7 @@
         android:layout_marginStart="40dp"
         android:background="@android:color/transparent"
         android:padding="15dp"
-        android:src="@drawable/ic_nav_bill"
+        android:src="@drawable/ic_nav_community"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
