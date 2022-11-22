@@ -21,7 +21,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 
 public class BillDetailActivity extends AppCompatActivity {
-    private ImageButton back_button, bill_icon, mypage_icon;
+    private ImageButton back_button;
     private TextView bill_name, propose, all_propose, age, propose_date, status, bill_content;
 
     @Override
@@ -30,8 +30,6 @@ public class BillDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bill_detail);
 
         back_button = (ImageButton) findViewById(R.id.back_button);
-        bill_icon = (ImageButton) findViewById(R.id.bill_icon);
-        mypage_icon = (ImageButton) findViewById(R.id.mypage_icon);
         bill_name = (TextView) findViewById(R.id.bill_name);
         propose = (TextView) findViewById(R.id.propose);
         all_propose = (TextView) findViewById(R.id.all_propose);
@@ -90,24 +88,6 @@ public class BillDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-            }
-        });
-
-        bill_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                Intent intent = new Intent(getApplicationContext(), BottomNavActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        mypage_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
-                startActivity(intent);
             }
         });
     }
