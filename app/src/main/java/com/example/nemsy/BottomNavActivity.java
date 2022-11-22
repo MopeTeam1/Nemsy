@@ -9,42 +9,51 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BottomNavActivity extends AppCompatActivity {
-    private ImageButton bill_icon, mypage_icon;
+    private ImageButton community_icon, bill_icon, mypage_icon;
+//    CommunityFragment communityFragment;
+    BillListFragment billListFragment;
+    MypageFragment mypageFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigation);
 
+        community_icon = (ImageButton) findViewById(R.id.community_icon);
         bill_icon = (ImageButton) findViewById(R.id.bill_icon);
         mypage_icon = (ImageButton) findViewById(R.id.mypage_icon);
+        billListFragment = (BillListFragment) getSupportFragmentManager().findFragmentById(R.id.bill_list);
+        mypageFragment = new MypageFragment();
+//        communityFragment = new CommunityFragment();
 
         // 액션바 제거
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+        // bottom navigation으로 프래그먼트 전환
+//        community_icon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation, communityFragment).commit();
+//            }
+//        });
+
         bill_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                overridePendingTransition(0, 0);
-                Intent intent = getIntent();
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+                getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation, billListFragment).commit();
             }
         });
 
-//        mypage_icon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
+        mypage_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation, mypageFragment).commit();
+            }
+        });
     }
 
-    public void onFragmentChanged(Bill item) {
+    public void putExtraToIntent(Bill item) {
         Intent intent = new Intent(getApplicationContext(), BillDetailActivity.class);
         intent.putExtra("BILL_ID", item.BILL_ID);
         intent.putExtra("DETAIL_LINK", item.DETAIL_LINK);
