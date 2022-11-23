@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommunityDetailActivity extends AppCompatActivity {
-    private ImageButton back_button, bill_icon, mypage_icon, community_icon, likeBtn, dislikeBtn, sendBtn;
+    private ImageButton back_button,likeBtn, dislikeBtn, sendBtn;
     private TextView title, writer, writtenDate, content, likeNum, dislikeNum;
     private boolean isLiked, isDisliked;
 
@@ -37,8 +37,6 @@ public class CommunityDetailActivity extends AppCompatActivity {
         back_button = (ImageButton) findViewById(R.id.back_button);
         likeBtn = (ImageButton) findViewById(R.id.like_button);
         dislikeBtn = (ImageButton) findViewById(R.id.dislike_button);
-        bill_icon = (ImageButton) findViewById(R.id.bill_icon);
-        mypage_icon = (ImageButton) findViewById(R.id.mypage_icon);
         // communityBtn = (ImageButton) findViewById(R.id.community_icon);
         sendBtn = (ImageButton) findViewById(R.id.send_button);
 
@@ -64,36 +62,6 @@ public class CommunityDetailActivity extends AppCompatActivity {
             public void onClick(View view) {finish();}
         });
 
-
-        // navigation
-        bill_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                Intent intent = new Intent(getApplicationContext(), BottomNavActivity.class);
-                startActivity(intent);
-            }
-        });
-        mypage_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        /*
-        communityBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                Intent intent = new Intent(getApplicationContext(), BottomNavActivity.class);
-                startActivity(intent);
-            }
-        });
-
-         */
 
 
 
