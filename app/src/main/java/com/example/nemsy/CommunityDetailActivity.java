@@ -47,6 +47,12 @@ public class CommunityDetailActivity extends AppCompatActivity {
         likeNum = (TextView) findViewById(R.id.like_num);
         dislikeNum = (TextView) findViewById(R.id.dislike_num);
 
+        Intent inIntent = getIntent();
+        title.setText(inIntent.getStringExtra("title"));
+        content.setText(inIntent.getStringExtra("content"));
+        writer.setText(inIntent.getStringExtra("author"));
+        writtenDate.setText(inIntent.getStringExtra("createdAt"));
+
         // 댓글 RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.comments_recyclerView);
 

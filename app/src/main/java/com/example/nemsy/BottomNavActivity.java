@@ -68,7 +68,7 @@ public class BottomNavActivity extends AppCompatActivity {
     }
 
     public void putExtraPostIntent(Post post) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CommunityDetailActivity.class);
         intent.putExtra("title", post.getTitle());
         intent.putExtra("content",post.getContent());
         intent.putExtra("author", post.getAuthor());
