@@ -27,6 +27,15 @@ public class PostListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         getData();
 
+        adapter.setOnItemClickListener(new OnPostItemClickListener() {
+            @Override
+            public void onItemClick(ViewHolderPost holder, View view, int position) {
+                Post item = adapter.getItem(position);
+                BottomNavActivity activity = (BottomNavActivity) getActivity();
+                activity.putExtraPostIntent(item);
+            }
+        });
+
         return rootView;
     }
 
