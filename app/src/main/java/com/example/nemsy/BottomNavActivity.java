@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class BottomNavActivity extends AppCompatActivity {
     private ImageButton community_icon, bill_icon, mypage_icon;
-//    CommunityFragment communityFragment;
+    PostListFragment postListFragment;
     BillListFragment billListFragment;
     MypageFragment mypageFragment;
 
@@ -24,19 +24,19 @@ public class BottomNavActivity extends AppCompatActivity {
         mypage_icon = (ImageButton) findViewById(R.id.mypage_icon);
         billListFragment = (BillListFragment) getSupportFragmentManager().findFragmentById(R.id.bill_list);
         mypageFragment = new MypageFragment();
-//        communityFragment = new CommunityFragment();
+        postListFragment = new PostListFragment();
 
         // 액션바 제거
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
         // bottom navigation으로 프래그먼트 전환
-//        community_icon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation, communityFragment).commit();
-//            }
-//        });
+        community_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation, postListFragment).commit();
+            }
+        });
 
         bill_icon.setOnClickListener(new View.OnClickListener() {
             @Override
