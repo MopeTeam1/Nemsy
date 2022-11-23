@@ -15,13 +15,23 @@ public class ViewHolderPost extends RecyclerView.ViewHolder{
     TextView author;
     TextView createdAt;
 
-    public ViewHolderPost(@NonNull View itemView){
+    public ViewHolderPost(@NonNull View itemView, final OnPostItemClickListener listener){
         super(itemView);
 
         title = itemView.findViewById(R.id.postTitle);
         content = itemView.findViewById(R.id.postContent);
         author = itemView.findViewById(R.id.postAuthor);
         createdAt = itemView.findViewById(R.id.postCreatedAt);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = getAdapterPosition();
+                if (listener != null) {
+                    listener.onItemClick(ViewHolderPost.this, view, position);
+                }
+            }
+        });
     }
 
     public void onBind(Post data){
