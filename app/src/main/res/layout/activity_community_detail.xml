@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ScrollView
+    android:layout_height="match_parent"
+    tools:context=".CommunityDetailActivity">
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="148dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,171 +31,72 @@
                 app:srcCompat="@drawable/button_back" />
 
             <TextView
-                android:id="@+id/bill_name"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
-                android:layout_marginTop="36dp"
-                android:layout_marginEnd="48dp"
+                android:layout_marginTop="32dp"
                 android:fontFamily="@font/intel_bold"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="국가정보원직원법 일부개정법률안" />
+                tools:text="국민대학교" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/bill_layout"
-                android:layout_width="280dp"
+                android:id="@+id/constraintLayout"
+                android:layout_width="264dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="40dp"
-                android:background="@drawable/round_square"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bill_name">
+                app:layout_constraintTop_toBottomOf="@+id/title">
 
                 <TextView
-                    android:id="@+id/propose_title"
-                    android:layout_width="56dp"
-                    android:layout_height="14dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="208dp"
-                    android:fontFamily="@font/intel_bold"
-                    android:text="제안자"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/writer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:text="닉네임1"
+                    android:textColor="@color/primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/all_propose_title"
-                    android:layout_width="56dp"
-                    android:layout_height="14dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/intel_bold"
-                    android:text="공동발의자"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    app:layout_constraintStart_toStartOf="@id/propose_title"
-                    app:layout_constraintTop_toBottomOf="@id/propose_title" />
-
-                <TextView
-                    android:id="@+id/age_title"
-                    android:layout_width="56dp"
-                    android:layout_height="14dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/intel_bold"
-                    android:text="대수"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    app:layout_constraintStart_toStartOf="@id/all_propose_title"
-                    app:layout_constraintTop_toBottomOf="@id/all_propose" />
-
-                <TextView
-                    android:id="@+id/propose_date_title"
-                    android:layout_width="56dp"
-                    android:layout_height="14dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/intel_bold"
-                    android:text="제안일자"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    app:layout_constraintStart_toStartOf="@id/age_title"
-                    app:layout_constraintTop_toBottomOf="@id/age_title" />
-
-                <TextView
-                    android:id="@+id/status_title"
-                    android:layout_width="56dp"
-                    android:layout_height="14dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/intel_bold"
-                    android:text="처리상태"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    app:layout_constraintStart_toStartOf="@id/propose_date_title"
-                    app:layout_constraintTop_toBottomOf="@id/propose_date_title" />
-
-                <TextView
-                    android:id="@+id/propose"
+                    android:id="@+id/writing_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/intel_regular"
-                    android:textColor="@color/black"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:text="10/13 04:08"
+                    android:textColor="@color/primary"
                     android:textSize="10sp"
-                    app:layout_constraintStart_toEndOf="@id/propose_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="유상범" />
-
-                <TextView
-                    android:id="@+id/all_propose"
-                    android:layout_width="184dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/intel_regular"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    app:layout_constraintStart_toEndOf="@id/all_propose_title"
-                    app:layout_constraintTop_toBottomOf="@id/propose"
-                    tools:text="구자근,권성동,김병기,김성원,서일준,송언석,장동혁,조해진,주호영 " />
-
-                <TextView
-                    android:id="@+id/propose_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/intel_regular"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    app:layout_constraintStart_toStartOf="@id/age"
-                    app:layout_constraintTop_toBottomOf="@id/age"
-                    tools:text="2022-11-01" />
-
-                <TextView
-                    android:id="@+id/age"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/intel_regular"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    app:layout_constraintStart_toStartOf="@id/all_propose"
-                    app:layout_constraintTop_toBottomOf="@id/all_propose"
-                    tools:text="21" />
-
-                <TextView
-                    android:id="@+id/status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/intel_regular"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
+                    android:textStyle="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/propose_date"
-                    app:layout_constraintTop_toBottomOf="@id/propose_date"
-                    tools:text="접수" />
-
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <TextView
-                android:id="@+id/bill_content"
-                android:layout_width="match_parent"
+                android:id="@+id/writing_content"
+                android:layout_width="264dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="52dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="52dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="40dp"
                 android:fontFamily="@font/intel_regular"
                 android:textColor="@color/black"
                 android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bill_layout"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
                 tools:text="국가정보원의 계급정년제도는 인사적체 완화와 조직활력 유지에 기여해 온 반면, 오랜 기간 동안 특정 분야에서 전문성을 쌓아온 우수한 직원들의 퇴직을 앞당기거나 직원들 간 과도한 승진 경쟁을 유발하는 원인으로 작용하면서, 조직의 전문성과 정보 역량에 막대한 손실을 초래하고, 조직화합을 저해하는 문제를 야기하고 있음." />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -201,11 +104,11 @@
                 android:layout_width="92dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="44dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="220dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bill_content">
+                app:layout_constraintTop_toBottomOf="@id/writing_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/like_layout"
@@ -299,12 +202,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="66dp"
                 android:layout_marginEnd="65dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/line">
             </androidx.recyclerview.widget.RecyclerView>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <EditText
         android:id="@+id/comment"
@@ -316,6 +223,7 @@
         android:fontFamily="@font/intel_regular"
         android:hint='댓글을 입력하세요.'
         android:inputType="textPersonName"
+        android:paddingStart="20dp"
         android:textColor="@color/black"
         android:textColorHint="@color/gray"
         android:textSize="12sp"

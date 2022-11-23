@@ -28,8 +28,8 @@
         <activity android:name=".BottomNavActivity" />
         <activity android:name=".BillDetailActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".MypageActivity" />
         <activity android:name=".SignUpActivity" />
+        <activity android:name=".CommunityDetailActivity"/>
         <activity android:name=".WriteActivity" />
     </application>
 
