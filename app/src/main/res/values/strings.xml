@@ -10,4 +10,6 @@
     <string name="NicknameChange">닉네임 변경</string>
     <string name="error">에러 메세지</string>
     <string name="logoutDetail">로그아웃 하시겠습니까?\n로그인 페이지로 돌아갑니다.</string>
+    <string name="title">제목</string>
+    <string name="content">내용을 입력하세요</string>
 </resources>
