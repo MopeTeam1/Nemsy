@@ -5,34 +5,41 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/communityTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="36dp"
-        android:text="발의법률안"
+        android:text="커뮤니티"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toBottomOf="@id/title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/title" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/postButton"
+        android:layout_width="64dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/button_smallbasic"
+        android:fontFamily="@font/intel_bold"
+        android:text="글쓰기"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        style="?android:attr/borderlessButtonStyle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/postRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="440dp"
+        android:layout_height="384dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="28dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintTop_toBottomOf="@id/communityTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
