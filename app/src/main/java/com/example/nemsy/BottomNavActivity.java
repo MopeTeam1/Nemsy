@@ -8,6 +8,8 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.nemsy.model.Post;
+
 public class BottomNavActivity extends AppCompatActivity {
     private ImageButton community_icon, bill_icon, mypage_icon;
     PostListFragment postListFragment;
@@ -62,6 +64,15 @@ public class BottomNavActivity extends AppCompatActivity {
         intent.putExtra("AGE", item.AGE);
         intent.putExtra("PROPOSE_DT", item.PROPOSE_DT);
         intent.putExtra("PROC_RESULT", item.PROC_RESULT);
+        startActivity(intent);
+    }
+
+    public void putExtraPostIntent(Post post) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("title", post.getTitle());
+        intent.putExtra("content",post.getContent());
+        intent.putExtra("author", post.getAuthor());
+        intent.putExtra("createdAt", post.getCreatedAt());
         startActivity(intent);
     }
 }

@@ -11,9 +11,10 @@ import com.example.nemsy.model.Post;
 
 import java.util.ArrayList;
 
-public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnPostItemClickListener{
 
     private ArrayList<Post> listData = new ArrayList<>();
+    OnPostItemClickListener listener;
 
     @NonNull
     @Override
@@ -34,6 +35,10 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void addItem(Post data) {
         listData.add(data);
+    }
+
+    public Post getItem(int position) {
+        return listData.get(position);
     }
 }
 

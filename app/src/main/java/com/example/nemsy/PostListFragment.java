@@ -27,6 +27,16 @@ public class PostListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         getData();
 
+
+        adapter.setOnItemClickListener(new OnBillItemClickListener() {
+            @Override
+            public void onItemClick(BillAdapter.ViewHolder holder, View view, int position) {
+                Bill item = adapter.getItem(position);
+                BottomNavActivity activity = (BottomNavActivity) getActivity();
+                activity.putExtraToIntent(item);
+            }
+        });
+
         return rootView;
     }
 
