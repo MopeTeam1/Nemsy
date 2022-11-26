@@ -1,5 +1,6 @@
 package com.example.nemsy;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,6 +20,10 @@ public class WriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
+
+        // 타이틀바 제거
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         getTitle = (EditText) findViewById(R.id.et_title);
         getContent = (EditText) findViewById(R.id.et_content);

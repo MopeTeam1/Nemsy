@@ -72,19 +72,12 @@ public class MypageFragment extends Fragment {
                     String key = userSnapshot.getKey();
                     if (key.toString().trim().equals(currUID.toString().trim())){
                         HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
+                        Log.d("DataBase", "userInfo: " +userInfo);
                         Log.d("Database", "currNick: " + userInfo.get("nickname"));
                         tv_nickname.setText(userInfo.get("nickname")+"");
                         tv_email.setText(userInfo.get("email")+"");
-
-//                        Log.d("Database", "key: " + key.toString().trim());
-//                        HashMap<String, Object> nickname = userInfo.get("nickname");
-//                        String currNickname = userInfo.get("nickname").toString();
-//                        Log.d("Database", "curr: " + currNickname);
-//                        tv_nickname.setText(currNickname);
                         break;
                     }
-//                    Log.d("Database", "value: " + userInfo);
-//                    Log.d("Database", "value: " + userInfo.get("password"));
                 }
             }
 

@@ -75,4 +75,9 @@ public class BottomNavActivity extends AppCompatActivity {
         intent.putExtra("createdAt", post.getCreatedAt());
         startActivity(intent);
     }
+
+    public void WriteIntent(){
+        Intent intent= new Intent(getApplicationContext(), WriteActivity.class);
+        startActivity(intent);
+    }
 }
