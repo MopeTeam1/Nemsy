@@ -7,13 +7,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -36,9 +39,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+
 public class BillDetailActivity extends AppCompatActivity {
-    private ImageButton back_button;
+    private ImageButton back_button, send_button;
     private TextView bill_name, propose, all_propose, age, propose_date, status, bill_content;
+    private EditText comment;
+    private ScrollView scrollView;
     String billId;
     CommentAdapter adapter;
 
@@ -55,7 +64,10 @@ public class BillDetailActivity extends AppCompatActivity {
         propose_date = (TextView) findViewById(R.id.propose_date);
         status = (TextView) findViewById(R.id.status);
         bill_content = (TextView) findViewById(R.id.bill_content);
+        comment = (EditText) findViewById(R.id.comment);
+        send_button = (ImageButton) findViewById(R.id.send_button);
         RecyclerView recyclerView = findViewById(R.id.comments_recyclerView);
+        scrollView = findViewById(R.id.scrollView);
 
         Intent inIntent = getIntent();
         billId = inIntent.getStringExtra("BILL_ID");
@@ -72,7 +84,7 @@ public class BillDetailActivity extends AppCompatActivity {
         if(AppHelper.requestQueue == null) {
             AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
         }
-        makeRequest();
+        getRequest();
 
         // 액션바 제거
         ActionBar actionBar = getSupportActionBar();
@@ -113,14 +125,27 @@ public class BillDetailActivity extends AppCompatActivity {
         adapter = new CommentAdapter();
         recyclerView.setAdapter(adapter);
 
+        // 뒤로가기 버튼
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+
+        // 댓글 전송 버튼
+        send_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Thread(() -> {
+                    postRequest(comment.getText().toString());
+                }).start();
+                comment.getText().clear();
+            }
+        });
     }
 
+    // 크롤링한 데이터 set
     Handler handler = new Handler(Looper.getMainLooper()){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -130,7 +155,8 @@ public class BillDetailActivity extends AppCompatActivity {
         }
     };
 
-    public void makeRequest() {
+    // 댓글 가져오기
+    public void getRequest() {
         String url = "http://54.250.154.173:8080/api/bill/"+billId+"/comments";
         Log.d("발의법률안 id", billId);
         Log.d("발의법률안 url", url);
@@ -174,12 +200,44 @@ public class BillDetailActivity extends AppCompatActivity {
         AppHelper.requestQueue.add(request);
     }
 
+    // 댓글 작성
+    public void postRequest(String content) {
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+            SharedPreferences prefs = getSharedPreferences("person_info", 0);
+            String authorId = prefs.getString("currUID", "");
+
+            String url = "http://54.250.154.173:8080/api/bill/"+billId+"/"+authorId+"/comments";
+            String strBody = String.format("{\"content\" : \"%s\"}", content);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
+
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(url).post(requestBody);
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            okhttp3.Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                getRequest();
+                scrollView.post(new Runnable() {  // 스크롤 맨 밑으로 내리기
+                    @Override
+                    public void run() {
+                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // JSON -> 객체 변환
     public void processResponse(String response) {
         response = "{\"commentList\":"+response+"}";
 
         Gson gson = new Gson();
         CommentResult commentResult = gson.fromJson(response, CommentResult.class);
 
+        adapter.clear();
         for(int i=0; i<commentResult.commentList.size(); i++) {
             Comment comment = commentResult.commentList.get(i);
             adapter.addItem(comment);
