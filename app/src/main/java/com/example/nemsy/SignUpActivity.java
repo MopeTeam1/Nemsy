@@ -222,9 +222,11 @@ public class SignUpActivity extends AppCompatActivity {
     // 자체 서버에 User 등록
     private void registerUser(String uid, String nickname) {
         try {
+            String content = "123123123123dgadsogahroeg";
             OkHttpClient client = new OkHttpClient();
-            String strURL = String.format("http://10.0.2.2:8080/api/user/register/%s", uid);
-            String strBody = String.format("{\"nickname\" : \"%s\"}", nickname);
+
+            String strURL = String.format("http://54.250.154.173:8080/api/user/register/%s", uid);
+            String strBody = String.format("{\"content\" : \"%s\"}", content);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
             Request.Builder builder = new Request.Builder().url(strURL).post(requestBody);
             builder.addHeader("Content-type", "application/json");

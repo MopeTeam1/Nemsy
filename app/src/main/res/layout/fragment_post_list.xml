@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/communityTextView"
@@ -36,10 +37,114 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/postRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="384dp"
+        android:layout_height="0dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="28dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/communityTextView" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/postRecyclerView"
+        app:layout_constraintStart_toStartOf="@id/postRecyclerView"
+        app:layout_constraintEnd_toEndOf="@id/postRecyclerView"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        >
+
+        <ImageButton
+            android:id="@+id/btn_paging_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_baseline_arrow_back_ios_24"
+            android:backgroundTint="@color/black"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:visibility="invisible"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_paging_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_paging"
+            tools:text="1"
+            android:layout_marginLeft="16dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_paging_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_paging"
+            tools:text="2"
+            android:layout_marginLeft="16dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_paging_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_paging"
+            tools:text="3"
+            android:layout_marginLeft="16dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_paging_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_paging"
+            tools:text="4"
+            android:layout_marginLeft="16dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_paging_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_paging"
+            tools:text="5"
+            android:layout_marginLeft="16dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:id="@+id/btn_paging_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_baseline_arrow_next_ios_24"
+            android:backgroundTint="@color/black"
+            android:visibility="visible"
+            android:layout_marginLeft="16dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            />
+
+
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

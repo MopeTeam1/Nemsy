@@ -184,7 +184,7 @@ public class MypageFragment extends Fragment {
             Log.i("newNickname ", newNickname);
             Log.i("UID ", currUID);
             OkHttpClient client = new OkHttpClient();
-            String strURL = String.format("http://10.0.2.2:8080/api/user/%s/nickname", currUID);
+            String strURL = String.format("http://54.250.154.173:8080/api/user/%s/nickname", currUID);
             String strBody = String.format("{\"nickname\" : \"%s\"}", newNickname);
             Log.i("strBody ", strBody);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
