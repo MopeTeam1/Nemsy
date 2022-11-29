@@ -11,19 +11,38 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BillDetailActivity extends AppCompatActivity {
     private ImageButton back_button;
     private TextView bill_name, propose, all_propose, age, propose_date, status, bill_content;
+    String billId;
+    CommentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +60,7 @@ public class BillDetailActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.comments_recyclerView);
 
         Intent inIntent = getIntent();
+        billId = inIntent.getStringExtra("BILL_ID");
         propose.setText(inIntent.getStringExtra("RST_PROPOSER"));
         all_propose.setText(inIntent.getStringExtra("PUBL_PROPOSER"));
         age.setText(inIntent.getStringExtra("AGE"));
@@ -49,6 +69,12 @@ public class BillDetailActivity extends AppCompatActivity {
         if(inIntent.getStringExtra("PROC_RESULT") == null) {
             status.setText("접수");
         }
+
+        // 서버 통신
+        if(AppHelper.requestQueue == null) {
+            AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+        makeRequest();
 
         // 액션바 제거
         ActionBar actionBar = getSupportActionBar();
@@ -86,7 +112,7 @@ public class BillDetailActivity extends AppCompatActivity {
         // recyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        CommentAdapter adapter = new CommentAdapter();
+        adapter = new CommentAdapter();
         recyclerView.setAdapter(adapter);
 
         back_button.setOnClickListener(new View.OnClickListener() {
@@ -105,4 +131,61 @@ public class BillDetailActivity extends AppCompatActivity {
             bill_content.setText(bundle.getString("content"));
         }
     };
+
+    public void makeRequest() {
+        String url = "http://54.250.154.173:8080/api/bill/"+billId+"/comments";
+        Log.d("발의법률안 id", billId);
+        Log.d("발의법률안 url", url);
+
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("응답", response);
+                        processResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("에러", error.getMessage());
+                    }
+                }
+        ) {
+            @Override // response를 UTF8로 변경 (한글 깨짐 해결)
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String utf8String = new String(response.data, "UTF-8");
+                    return Response.success(utf8String, HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (Exception e) {
+                    return Response.error(new ParseError(e));
+                }
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
+    }
+
+    public void processResponse(String response) {
+        response = "{\"commentList\":"+response+"}";
+
+        Gson gson = new Gson();
+        CommentResult commentResult = gson.fromJson(response, CommentResult.class);
+
+        for(int i=0; i<commentResult.commentList.size(); i++) {
+            Comment comment = commentResult.commentList.get(i);
+            adapter.addItem(comment);
+        }
+        adapter.notifyDataSetChanged();
+    }
 }
