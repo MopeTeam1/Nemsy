@@ -51,5 +51,9 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             listener.onItemClick(holder, view, position);
         }
     }
+
+    public void clear() {
+        listData.clear();
+    }
 }
 

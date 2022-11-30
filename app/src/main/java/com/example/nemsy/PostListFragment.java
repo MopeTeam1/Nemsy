@@ -14,9 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nemsy.model.Post;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -69,15 +66,14 @@ public class PostListFragment extends Fragment {
         nowPageRange = 0;
         setPagingNum();
 
-
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PostAdapter();
+        recyclerView.setAdapter(adapter);
+
         new Thread(() -> {
             getData();
         }).start();
-        recyclerView.setAdapter(adapter);
 
         pagingBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +127,7 @@ public class PostListFragment extends Fragment {
         return rootView;
     }
 
-    private void getData(){
+    private void getData() {
         String responseString = null;
         try {
             OkHttpClient client = new OkHttpClient();
@@ -150,30 +146,40 @@ public class PostListFragment extends Fragment {
             e.printStackTrace();
         }
 
-        try {
-            JSONArray jsonArray = new JSONArray(responseString);
-            Post data;
-            Log.d("responseString :", responseString);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String title = jsonObject.getString("title");
-                String content = jsonObject.getString("content");
-                String author = jsonObject.getString("authorNickname");
-                String createdAt = jsonObject.getString("createdAt");
-                int likeCount = jsonObject.getInt("likeCount");
-                data = new Post(title, content, author, createdAt, likeCount);
-                adapter.addItem(data);
-                Log.d("jsonObject :", jsonObject.toString());
+        final String response = responseString;
+
+        adapter.clear();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    Post data;
+                    Log.d("responseString :", response);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String title = jsonObject.getString("title");
+                        String content = jsonObject.getString("content");
+                        String author = jsonObject.getString("authorNickname");
+                        String createdAt = jsonObject.getString("createdAt");
+                        int likeCount = jsonObject.getInt("likeCount");
+                        data = new Post(title, content, author, createdAt, likeCount);
+                        adapter.addItem(data);
+                        Log.d("jsonObject :", jsonObject.toString());
+                    }
+                    adapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
+
 
     private final View.OnClickListener pagingListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            nowPageNum = Integer.parseInt(((AppCompatButton)view).getText().toString());
+            nowPageNum = Integer.parseInt(((AppCompatButton)view).getText().toString()) - 1;
 
             // 게시글 가져오는 코드
             new Thread(() -> {
