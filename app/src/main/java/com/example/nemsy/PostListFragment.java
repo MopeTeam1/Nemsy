@@ -2,6 +2,7 @@ package com.example.nemsy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,8 @@ public class PostListFragment extends Fragment {
     int nowPageRange;
     int nowPageNum;
 
+    Handler handler = new Handler();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_post_list, container, false);
@@ -66,14 +69,15 @@ public class PostListFragment extends Fragment {
         nowPageRange = 0;
         setPagingNum();
 
+
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PostAdapter();
-        recyclerView.setAdapter(adapter);
-
         new Thread(() -> {
             getData();
         }).start();
+        recyclerView.setAdapter(adapter);
 
         pagingBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +131,7 @@ public class PostListFragment extends Fragment {
         return rootView;
     }
 
-    private void getData() {
+    private void getData(){
         String responseString = null;
         try {
             OkHttpClient client = new OkHttpClient();
@@ -146,40 +150,41 @@ public class PostListFragment extends Fragment {
             e.printStackTrace();
         }
 
-        final String response = responseString;
+        try {
+            JSONArray jsonArray = new JSONArray(responseString);
+            Post data;
+            Log.d("responseString :", responseString);
+            adapter.clear();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String title = jsonObject.getString("title");
+                String content = jsonObject.getString("content");
+                String author = jsonObject.getString("authorNickname");
+                String createdAt = jsonObject.getString("createdAt");
+                int likeCount = jsonObject.getInt("likeCount");
+                data = new Post(title, content, author, createdAt, likeCount);
+                adapter.addItem(data);
+                Log.d("jsonObject :", jsonObject.toString());
+                setData();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        adapter.clear();
-        getActivity().runOnUiThread(new Runnable() {
+    private void setData() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    Post data;
-                    Log.d("responseString :", response);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String title = jsonObject.getString("title");
-                        String content = jsonObject.getString("content");
-                        String author = jsonObject.getString("authorNickname");
-                        String createdAt = jsonObject.getString("createdAt");
-                        int likeCount = jsonObject.getInt("likeCount");
-                        data = new Post(title, content, author, createdAt, likeCount);
-                        adapter.addItem(data);
-                        Log.d("jsonObject :", jsonObject.toString());
-                    }
-                    adapter.notifyDataSetChanged();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                adapter.notifyDataSetChanged();
             }
         });
     }
 
-
     private final View.OnClickListener pagingListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            nowPageNum = Integer.parseInt(((AppCompatButton)view).getText().toString()) - 1;
+            nowPageNum = Integer.parseInt(((AppCompatButton)view).getText().toString());
 
             // 게시글 가져오는 코드
             new Thread(() -> {

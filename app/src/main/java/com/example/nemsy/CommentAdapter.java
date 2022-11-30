@@ -49,6 +49,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return items.set(position, item);
     }
 
+    public void clear() {
+        items.clear();
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nickname, datetime, content;
 
@@ -61,8 +65,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
 
         public void setItem(Comment item) {
-            nickname.setText(item.getNickname());
-            datetime.setText(item.getDatetime());
+            nickname.setText(item.getUserId());
+            datetime.setText(item.getModifiedAt());
             content.setText(item.getContent());
         }
     }
