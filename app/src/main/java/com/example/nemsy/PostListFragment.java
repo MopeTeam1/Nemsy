@@ -2,6 +2,7 @@ package com.example.nemsy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nemsy.model.Post;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,6 +41,8 @@ public class PostListFragment extends Fragment {
 
     int nowPageRange;
     int nowPageNum;
+
+    Handler handler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -164,10 +164,20 @@ public class PostListFragment extends Fragment {
                 data = new Post(title, content, author, createdAt, likeCount);
                 adapter.addItem(data);
                 Log.d("jsonObject :", jsonObject.toString());
+                setData();
             }
         }catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setData() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private final View.OnClickListener pagingListener = new View.OnClickListener() {
