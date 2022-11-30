@@ -52,6 +52,7 @@ public class MypageFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
 
     String currUID;
+    String currNick;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_mypage, container, false);
@@ -84,6 +85,10 @@ public class MypageFragment extends Fragment {
                         Log.d("Database", "currNick: " + userInfo.get("nickname"));
                         tv_nickname.setText(userInfo.get("nickname")+"");
                         tv_email.setText(userInfo.get("email")+"");
+                        editor.putString("currNick", userInfo.get("nickname")+"");
+                        editor.apply();
+                        currNick = pref.getString("currNick","");
+                        Log.d("Database", "currNick: " + currNick );
                         break;
                     }
                 }
@@ -180,6 +185,8 @@ public class MypageFragment extends Fragment {
     }
 
     private void changeNickName(String newNickname) {
+        SharedPreferences pref = this.getActivity().getSharedPreferences("person_info", 0); // 프레퍼런스
+        SharedPreferences.Editor editor = pref.edit();
         try {
             Log.i("newNickname ", newNickname);
             Log.i("UID ", currUID);
@@ -202,6 +209,10 @@ public class MypageFragment extends Fragment {
                     public void run() {
                         tv_nickname.setText(newNickname);
                         Toast.makeText(getContext(),"닉네임이 성공적으로 변경되었습니다",Toast.LENGTH_SHORT).show();
+                        editor.putString("currNick", newNickname);
+                        editor.apply();
+                        currNick = pref.getString("currNick","");
+                        Log.d("Database", "currNick: " + currNick );
                     }
                 });
             } else {
