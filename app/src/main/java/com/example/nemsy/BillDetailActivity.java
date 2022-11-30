@@ -1,33 +1,55 @@
 package com.example.nemsy;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.media.Image;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 
 public class BillDetailActivity extends AppCompatActivity {
-    private ImageButton back_button, bill_icon, mypage_icon, likeBtn, dislikeBtn;
-    private TextView bill_name, propose, all_propose, age, propose_date, status, bill_content, likeNum, dislikeNum;
-    private String billId, userId;
-    private boolean isLiked, isDisliked;
+    private ImageButton back_button, send_button;
+    private TextView bill_name, propose, all_propose, age, propose_date, status, bill_content;
+    private EditText comment;
+    private ScrollView scrollView;
+    String billId;
+    CommentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +57,6 @@ public class BillDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bill_detail);
 
         back_button = (ImageButton) findViewById(R.id.back_button);
-        bill_icon = (ImageButton) findViewById(R.id.bill_icon);
-        mypage_icon = (ImageButton) findViewById(R.id.mypage_icon);
-        likeBtn = (ImageButton) findViewById(R.id.like_button);
-        dislikeBtn = (ImageButton) findViewById(R.id.dislike_button);
         bill_name = (TextView) findViewById(R.id.bill_name);
         propose = (TextView) findViewById(R.id.propose);
         all_propose = (TextView) findViewById(R.id.all_propose);
@@ -46,9 +64,10 @@ public class BillDetailActivity extends AppCompatActivity {
         propose_date = (TextView) findViewById(R.id.propose_date);
         status = (TextView) findViewById(R.id.status);
         bill_content = (TextView) findViewById(R.id.bill_content);
-        likeNum = (TextView) findViewById(R.id.like_num);
-        dislikeNum = (TextView) findViewById(R.id.dislike_num);
+        comment = (EditText) findViewById(R.id.comment);
+        send_button = (ImageButton) findViewById(R.id.send_button);
         RecyclerView recyclerView = findViewById(R.id.comments_recyclerView);
+        scrollView = findViewById(R.id.scrollView);
 
         Intent inIntent = getIntent();
         billId = inIntent.getStringExtra("BILL_ID");
@@ -61,9 +80,15 @@ public class BillDetailActivity extends AppCompatActivity {
             status.setText("접수");
         }
 
-        userId = "dfinwqeofnwoi1111";
-        isLiked = false;
-        isDisliked = false;
+        // 서버 통신
+        if(AppHelper.requestQueue == null) {
+            AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+        getRequest();
+
+        // 액션바 제거
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         // 웹 크롤링
         String detailLink = inIntent.getStringExtra("DETAIL_LINK");
@@ -97,9 +122,10 @@ public class BillDetailActivity extends AppCompatActivity {
         // recyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        CommentAdapter adapter = new CommentAdapter();
+        adapter = new CommentAdapter();
         recyclerView.setAdapter(adapter);
 
+        // 뒤로가기 버튼
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,69 +133,19 @@ public class BillDetailActivity extends AppCompatActivity {
             }
         });
 
-        bill_icon.setOnClickListener(new View.OnClickListener() {
+        // 댓글 전송 버튼
+        send_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                Intent intent = new Intent(getApplicationContext(), BottomNavActivity.class);
-                startActivity(intent);
+                new Thread(() -> {
+                    postRequest(comment.getText().toString());
+                }).start();
+                comment.getText().clear();
             }
         });
-
-        mypage_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
-                startActivity(intent);
-            }
-        });
-        new Thread(() -> {
-            isLiked = getIsLiked("likes");
-            isDisliked = getIsLiked("likes");
-        }).start();;
-        System.out.println("-----------------------mid---=-=-=-=-==--=-=-=-=-=");
-
-//        likeBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int likeCnt;
-//                System.out.println("-----------------------clickedLike---=-=-=-=-==--=-=-=-=-=");
-//                if (isLiked)
-//                    likeCnt = deleteLike("likes");
-//                else {
-//                    if (isDisliked) {
-//                        int dislikeCnt = deleteLike("dislikes");
-//                        dislikeNum.setText(dislikeCnt);
-//                    }
-//                    likeCnt = postLike("likes");
-//                    System.out.println(likeCnt);
-//                    System.out.println("-----------------------postLikeEnd---=-=-=-=-==--=-=-=-=-=");
-//                }
-//                likeNum.setText(likeCnt);
-//            }
-//        });
-//
-//        dislikeBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int dislikeCnt;
-//                if (isDisliked)
-//                    dislikeCnt = deleteLike("dislikes");
-//                else {
-//                    if (isLiked) {
-//                        int likeCnt = deleteLike("likes");
-//                        dislikeNum.setText(likeCnt);
-//                    }
-//                    dislikeCnt = postLike("dislikes");
-//
-//                }
-//                likeNum.setText(dislikeCnt);
-//            }
-//        });
-
     }
 
+    // 크롤링한 데이터 set
     Handler handler = new Handler(Looper.getMainLooper()){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -179,132 +155,93 @@ public class BillDetailActivity extends AppCompatActivity {
         }
     };
 
-    private boolean getIsLiked(String type) {
-        try {
-            String url = String.format("http://10.0.2.2:8080/api/bill/%s/%s/%s", billId, userId, type);
-            System.out.println(url);
+    // 댓글 가져오기
+    public void getRequest() {
+        String url = "http://54.250.154.173:8080/api/bill/"+billId+"/comments";
+        Log.d("발의법률안 id", billId);
+        Log.d("발의법률안 url", url);
 
-            // OkHttp 클라이언트 객체 생성
-            OkHttpClient client = new OkHttpClient();
-
-            // GET 요청 객체 생성
-            Request.Builder builder = new Request.Builder().url(url).get();
-
-            builder.addHeader("Content-type", "application/json");
-
-            Request request = builder.build();
-            System.out.println("Error pos 4");
-
-            // OkHttp 클라이언트로 GET 요청 객체 전송
-            Response response = client.newCall(request).execute();
-            System.out.println("Error pos 5");
-
-            if (response.isSuccessful()) {
-                // 응답 받아서 처리
-                System.out.println("Error pos 6");
-
-                ResponseBody body = response.body();
-                if (body != null) {
-                    System.out.println("Response:" + body.string());
-                    if (body.toString().equals("true"))
-                        return true;
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("응답", response);
+                        processResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("에러", error.getMessage());
+                    }
                 }
-                else
-                    System.out.println("Error Occurred:" + body.string());
+        ) {
+            @Override // response를 UTF8로 변경 (한글 깨짐 해결)
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String utf8String = new String(response.data, "UTF-8");
+                    return Response.success(utf8String, HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (Exception e) {
+                    return Response.error(new ParseError(e));
+                }
             }
-            else
-                System.err.println("Error Occurred");
 
-            return false;
-        } catch(Exception e) {
-            System.out.println("Error pos 7");
-
-            e.printStackTrace();
-        }
-
-        return false;
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
     }
 
-    private int postLike(String type) {
-        System.out.println("-----------------------postLike---=-=-=-=-==--=-=-=-=-=");
-        try{
-            //인스턴스를 생성합니다.
-            System.out.println("error pos 1");
+    // 댓글 작성
+    public void postRequest(String content) {
+        try {
             OkHttpClient client = new OkHttpClient();
-            System.out.println("error pos 2");
 
-            //URL
-            String strURL = String.format("http://10.0.2.2:8080/api/bill/%s/%s/%s", billId, userId, type);
-            System.out.println("error pos 3");
+            SharedPreferences prefs = getSharedPreferences("person_info", 0);
+            String authorId = prefs.getString("currUID", "");
 
-            //parameter를 JSON object로 전달합니다
-            String strBody = "";
-            System.out.println("error pos 4");
-
-            //POST요청을 위한 request body를 구성합니다.
+            String url = "http://54.250.154.173:8080/api/bill/"+billId+"/"+authorId+"/comments";
+            String strBody = String.format("{\"content\" : \"%s\"}", content);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
-            System.out.println("error pos 5");
 
-            //POST요청을 위한 build작업
-            Request.Builder builder = new Request.Builder().url(strURL).post(requestBody);
-            System.out.println("error pos 6");
-
-
-            //json을 주고받는 경우, 헤더에 추가
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(url).post(requestBody);
             builder.addHeader("Content-type", "application/json");
-
-            //request 객체를 생성
-            Request request = builder.build();
-
-            //request를 요청하고 그 결과를 response 객체로 응답을 받음.
-            Response response = client.newCall(request).execute();
-            //응답처리
-            if(response.isSuccessful()){
-                ResponseBody body = response.body();
-                System.out.println("[responseBody]:"+ body.string());
-                int cnt = Integer.parseInt(body.string());
-                body.close();
-                return cnt;
+            okhttp3.Request request = builder.build();
+            okhttp3.Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                getRequest();
+                scrollView.post(new Runnable() {  // 스크롤 맨 밑으로 내리기
+                    @Override
+                    public void run() {
+                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                });
             }
-        }catch(Exception e){
-            System.out.println("==================start=====================");
+        } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("==================end=====================");
-
         }
-        return -1;
     }
 
-    private int deleteLike(String type) {
-        System.out.println("-----------------------DeleteLike---=-=-=-=-==--=-=-=-=-=");
-        try{
-            //인스턴스를 생성합니다.
-            OkHttpClient client = new OkHttpClient();
-            //URL
-            String strURL = String.format("http://10.0.2.2:8080/api/bill/%s/%s/%s", billId, userId, type);
+    // JSON -> 객체 변환
+    public void processResponse(String response) {
+        response = "{\"commentList\":"+response+"}";
 
-            //POST요청을 위한 build작업
-            Request.Builder builder = new Request.Builder().url(strURL).delete();
+        Gson gson = new Gson();
+        CommentResult commentResult = gson.fromJson(response, CommentResult.class);
 
-            //json을 주고받는 경우, 헤더에 추가
-            builder.addHeader("Content-type", "application/json");
-
-            //request 객체를 생성
-            Request request = builder.build();
-
-            //request를 요청하고 그 결과를 response 객체로 응답을 받음.
-            Response response = client.newCall(request).execute();
-            //응답처리
-            if(response.isSuccessful()){
-                ResponseBody body = response.body();
-                System.out.println("[responseBody]:"+ body.string());
-                int cnt = Integer.parseInt(body.string());
-                body.close();
-                return cnt;
-            }
-        }catch(Exception e){
-            e.printStackTrace();
+        adapter.clear();
+        for(int i=0; i<commentResult.commentList.size(); i++) {
+            Comment comment = commentResult.commentList.get(i);
+            adapter.addItem(comment);
         }
-        return -1;
+        adapter.notifyDataSetChanged();
     }
 }
