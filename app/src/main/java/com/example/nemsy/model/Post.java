@@ -5,12 +5,14 @@ public class Post {
     String content;
     String author;
     String createdAt;
+    int likeCount;
 
-    public Post(String title, String content, String author, String createdAt){
+    public Post(String title, String content, String author, String createdAt, int likeCount){
         this.title = title;
         this.content = content;
         this.author = author;
         this.createdAt = createdAt;
+        this.likeCount = likeCount;
     }
 
     public String getTitle() {
@@ -45,4 +47,11 @@ public class Post {
         this.createdAt = createdAt;
     }
 
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
 }
