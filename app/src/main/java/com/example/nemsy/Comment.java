@@ -1,37 +1,43 @@
 package com.example.nemsy;
 
 public class Comment {
-    String nickname;
-    String datetime;
+    Long id;
     String content;
+    String userId;
+    String billId;
+    String createdAt;
+    String modifiedAt;
 
-    public Comment(String nickname, String datetime, String content) {
-        this.nickname = nickname;
-        this.datetime = datetime;
+    public Comment(Long id, String content, String userId, String billId, String createdAt, String modifiedAt) {
+        this.id = id;
         this.content = content;
+        this.userId = userId;
+        this.billId = billId;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getDatetime() {
-        return datetime;
-    }
-
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
+    public Long getId() {
+        return id;
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getBillId() {
+        return billId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getModifiedAt() {
+        return modifiedAt;
     }
 }

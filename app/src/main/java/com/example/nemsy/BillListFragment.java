@@ -33,8 +33,6 @@ public class BillListFragment extends Fragment {
     ArrayList ages = new ArrayList();
     String requestAge = "21";
 
-    static RequestQueue requestQueue;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_bill_list, container, false);
@@ -42,8 +40,8 @@ public class BillListFragment extends Fragment {
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
         Spinner spinner = rootView.findViewById(R.id.spinner);
 
-        if(requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(getContext());
+        if(AppHelper.requestQueue == null) {
+            AppHelper.requestQueue = Volley.newRequestQueue(getContext());
         }
 
         // spinner
@@ -114,7 +112,7 @@ public class BillListFragment extends Fragment {
             }
         };
         request.setShouldCache(false);
-        requestQueue.add(request);
+        AppHelper.requestQueue.add(request);
     }
 
     public void processResponse(String response) {
