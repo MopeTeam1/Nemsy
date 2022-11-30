@@ -27,6 +27,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class MypageFragment extends Fragment {
     Dialog nicknameDialog;
     Dialog logoutDialog;
@@ -45,6 +51,8 @@ public class MypageFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
 
+    String currUID;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_mypage, container, false);
 
@@ -60,7 +68,7 @@ public class MypageFragment extends Fragment {
 
         SharedPreferences pref = this.getActivity().getSharedPreferences("person_info", 0); // 프레퍼런스
         SharedPreferences.Editor editor = pref.edit();
-        String currUID = pref.getString("currUID","");
+        currUID = pref.getString("currUID","");
         Log.d("Database", "prefCurrUID: " + currUID);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -72,19 +80,12 @@ public class MypageFragment extends Fragment {
                     String key = userSnapshot.getKey();
                     if (key.toString().trim().equals(currUID.toString().trim())){
                         HashMap<String, HashMap<String, Object>> userInfo = (HashMap<String, HashMap<String, Object>>) userSnapshot.getValue();
+                        Log.d("DataBase", "userInfo: " +userInfo);
                         Log.d("Database", "currNick: " + userInfo.get("nickname"));
                         tv_nickname.setText(userInfo.get("nickname")+"");
                         tv_email.setText(userInfo.get("email")+"");
-
-//                        Log.d("Database", "key: " + key.toString().trim());
-//                        HashMap<String, Object> nickname = userInfo.get("nickname");
-//                        String currNickname = userInfo.get("nickname").toString();
-//                        Log.d("Database", "curr: " + currNickname);
-//                        tv_nickname.setText(currNickname);
                         break;
                     }
-//                    Log.d("Database", "value: " + userInfo);
-//                    Log.d("Database", "value: " + userInfo.get("password"));
                 }
             }
 
@@ -162,7 +163,9 @@ public class MypageFragment extends Fragment {
                 }
                 else {
                     //회원정보의 닉네임 바꿔주기
-                    Toast.makeText(getContext(),"닉네임이 성공적으로 변경되었습니다",Toast.LENGTH_SHORT).show();
+                    new Thread(() -> {
+                        changeNickName(nickname);
+                    }).start();
                     nicknameDialog.dismiss();
                 }
             }
@@ -174,5 +177,37 @@ public class MypageFragment extends Fragment {
                 nicknameDialog.dismiss();
             }
         });
+    }
+
+    private void changeNickName(String newNickname) {
+        try {
+            Log.i("newNickname ", newNickname);
+            Log.i("UID ", currUID);
+            OkHttpClient client = new OkHttpClient();
+            String strURL = String.format("http://54.250.154.173:8080/api/user/%s/nickname", currUID);
+            String strBody = String.format("{\"nickname\" : \"%s\"}", newNickname);
+            Log.i("strBody ", strBody);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
+            Request.Builder builder = new Request.Builder().url(strURL).put(requestBody);
+            builder.addHeader("Content-type", "application/json");
+            Request request = builder.build();
+            Log.d("http ", "log 6");
+            Response response = client.newCall(request).execute();
+            Log.d("http ", "log 7");
+            if(response.isSuccessful()) {
+                Log.d("http :", "success");
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv_nickname.setText(newNickname);
+                        Toast.makeText(getContext(),"닉네임이 성공적으로 변경되었습니다",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

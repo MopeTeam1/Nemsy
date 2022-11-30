@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.SigningInfo;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +30,12 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class SignUpActivity extends AppCompatActivity {
     ImageButton buttonBack;
@@ -96,6 +103,11 @@ public class SignUpActivity extends AppCompatActivity {
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference = database.getReference("Users");
                                 reference.child(uid).setValue(hashmap);
+
+                                // 자체 서버에 유저 등록
+                                new Thread(() -> {
+                                    registerUser(uid, nickname);
+                                }).start();
 
                                 Toast.makeText(SignUpActivity.this,"회원가입에 성공",Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
@@ -205,5 +217,26 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    // 자체 서버에 User 등록
+    private void registerUser(String uid, String nickname) {
+        try {
+            String content = "123123123123dgadsogahroeg";
+            OkHttpClient client = new OkHttpClient();
+
+            String strURL = String.format("http://54.250.154.173:8080/api/user/register/%s", uid);
+            String strBody = String.format("{\"content\" : \"%s\"}", content);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
+            Request.Builder builder = new Request.Builder().url(strURL).post(requestBody);
+            builder.addHeader("Content-type", "application/json");
+            Request request = builder.build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                Log.d("http :", "success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

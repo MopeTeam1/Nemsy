@@ -149,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = pref.edit();
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+                            Log.d("Pref", "currUserId: " + user.getUid());
                             editor.putString("currUID", user.getUid());
                             editor.apply();
                             Intent intent = new Intent(LoginActivity.this, BottomNavActivity.class); // 일단 Main으로 intent
