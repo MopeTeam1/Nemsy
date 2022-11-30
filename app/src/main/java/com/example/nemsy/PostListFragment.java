@@ -154,6 +154,7 @@ public class PostListFragment extends Fragment {
             JSONArray jsonArray = new JSONArray(responseString);
             Post data;
             Log.d("responseString :", responseString);
+            adapter.clear();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String title = jsonObject.getString("title");
