@@ -4,14 +4,16 @@ public class Comment {
     Long id;
     String content;
     String userId;
+    String userNickname;
     String billId;
     String createdAt;
     String modifiedAt;
 
-    public Comment(Long id, String content, String userId, String billId, String createdAt, String modifiedAt) {
+    public Comment(Long id, String content, String userId, String userNickname, String billId, String createdAt, String modifiedAt) {
         this.id = id;
         this.content = content;
         this.userId = userId;
+        this.userNickname = userNickname;
         this.billId = billId;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
@@ -27,6 +29,10 @@ public class Comment {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getUserNickname() {
+        return userNickname;
     }
 
     public String getBillId() {
