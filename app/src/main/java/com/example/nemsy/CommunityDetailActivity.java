@@ -68,8 +68,5 @@ public class CommunityDetailActivity extends AppCompatActivity {
             public void onClick(View view) {finish();}
         });
 
-
-
-
     }
 }

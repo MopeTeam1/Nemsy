@@ -42,20 +42,25 @@ import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 public class BillDetailActivity extends AppCompatActivity {
-    private ImageButton back_button, send_button;
+    private ImageButton back_button, send_button, like_button;
     private TextView bill_name, propose, all_propose, age, propose_date, status, bill_content;
     private EditText comment;
     private ScrollView scrollView;
     String billId;
     CommentAdapter adapter;
+    private String responseString;
+    private int likeCount;
+    private String isLikeClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill_detail);
 
+        like_button = (ImageButton) findViewById(R.id.like_button);
         back_button = (ImageButton) findViewById(R.id.back_button);
         bill_name = (TextView) findViewById(R.id.bill_name);
         propose = (TextView) findViewById(R.id.propose);
@@ -125,6 +130,23 @@ public class BillDetailActivity extends AppCompatActivity {
         adapter = new CommentAdapter();
         recyclerView.setAdapter(adapter);
 
+        new Thread(() -> {
+            getLike();
+        }).start();
+
+        like_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("postLike:", "33");
+                Log.d("postLike:", "isLikeClicked" + isLikeClicked);
+                if (isLikeClicked.equals("false")) {
+                    new Thread(() -> {
+                        postLike();
+                    }).start();
+                }
+            }
+        });
+
         // 뒤로가기 버튼
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +165,7 @@ public class BillDetailActivity extends AppCompatActivity {
                 comment.getText().clear();
             }
         });
+
     }
 
     // 크롤링한 데이터 set
@@ -198,6 +221,55 @@ public class BillDetailActivity extends AppCompatActivity {
         };
         request.setShouldCache(false);
         AppHelper.requestQueue.add(request);
+    }
+
+    private void getLike(){
+        SharedPreferences pref = getSharedPreferences("person_info", 0);
+        String userId = pref.getString("currUID", "");
+        try{
+            OkHttpClient client = new OkHttpClient();
+            String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/likes", billId, userId);
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).get();
+            Log.d("getLike","billId: " + billId);
+            Log.d("getLike","strURL" + strURL);
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            Log.d("getLike","request: " +request);
+            okhttp3.Response response = client.newCall(request).execute();
+            Log.d("getLike","response: " +response);
+            if(response.isSuccessful()) {
+                ResponseBody body = response.body();
+                isLikeClicked = body.string();
+//                System.out.println("[responseBody]:"+ responseString.getClass().getTypeName());
+                Log.d("getLike","responseString" + isLikeClicked);
+                body.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void postLike(){
+        SharedPreferences pref = getSharedPreferences("person_info", 0);
+        String userId = pref.getString("currUID", "");
+        try{
+            OkHttpClient client = new OkHttpClient();
+            String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/likes", billId,userId);
+            String strBody = String.format("");
+            Log.d("postLike","strURL" + strURL);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).post(requestBody);
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            Log.d("postLike","request: " +request);
+            okhttp3.Response response = client.newCall(request).execute();
+            Log.d("postLike","response: " +response);
+            if(response.isSuccessful()) {
+                Log.d("postLike", " response: success");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // 댓글 작성
