@@ -109,7 +109,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     registerUser(uid, nickname);
                                 }).start();
 
-                                Toast.makeText(SignUpActivity.this,"회원가입에 성공",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this,"회원가입에 성공하였습니다.",Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                                 startActivity(intent);
                                 finish();

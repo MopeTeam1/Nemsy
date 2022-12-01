@@ -1,6 +1,7 @@
 package com.example.nemsy;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -41,6 +42,7 @@ public class PostListFragment extends Fragment {
 
     int nowPageRange;
     int nowPageNum;
+    Long postCnt;
 
     Handler handler = new Handler();
 
@@ -69,8 +71,6 @@ public class PostListFragment extends Fragment {
         nowPageRange = 0;
         setPagingNum();
 
-
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PostAdapter();
@@ -82,7 +82,6 @@ public class PostListFragment extends Fragment {
         pagingBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
             }
         });
 
@@ -135,7 +134,8 @@ public class PostListFragment extends Fragment {
         String responseString = null;
         try {
             OkHttpClient client = new OkHttpClient();
-            String strURL = String.format("http://54.250.154.173:8080/api/board?page=%d", nowPageNum);
+            String strURL = String.format("http://10.0.2.2:8080/api/board?page=%d", nowPageNum);
+//            String strURL = String.format("http://54.250.154.173:8080/api/board?page=%d", nowPageNum);
             Request.Builder builder = new Request.Builder().url(strURL).get();
             builder.addHeader("Content-type", "application/json");
             Request request = builder.build();
@@ -151,9 +151,10 @@ public class PostListFragment extends Fragment {
         }
 
         try {
-            JSONArray jsonArray = new JSONArray(responseString);
+            JSONObject ob = new JSONObject(responseString);
+            postCnt = ob.getLong("postCnt");
+            JSONArray jsonArray = ob.getJSONArray("postList");
             Post data;
-            Log.d("responseString :", responseString);
             adapter.clear();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -184,7 +185,14 @@ public class PostListFragment extends Fragment {
     private final View.OnClickListener pagingListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            nowPageNum = Integer.parseInt(((AppCompatButton)view).getText().toString());
+            nowPageNum = Integer.parseInt(((AppCompatButton)view).getText().toString()) - 1;
+            AppCompatButton selected = (AppCompatButton)view;
+            pagingFirstButton.setTextColor(Color.parseColor("#8E8E8E"));
+            pagingSecondButton.setTextColor(Color.parseColor("#8E8E8E"));
+            pagingThirdButton.setTextColor(Color.parseColor("#8E8E8E"));
+            pagingFourthButton.setTextColor(Color.parseColor("#8E8E8E"));
+            pagingFifthButton.setTextColor(Color.parseColor("#8E8E8E"));
+            selected.setTextColor(Color.parseColor("#000000"));
 
             // 게시글 가져오는 코드
             new Thread(() -> {
@@ -197,5 +205,10 @@ public class PostListFragment extends Fragment {
         for (int i=0; i<5; i++) {
             pagingButtonList[i].setText(String.valueOf(nowPageRange*5+i+1));
         }
+        pagingFirstButton.setTextColor(Color.parseColor("#000000"));
+        pagingSecondButton.setTextColor(Color.parseColor("#8E8E8E"));
+        pagingThirdButton.setTextColor(Color.parseColor("#8E8E8E"));
+        pagingFourthButton.setTextColor(Color.parseColor("#8E8E8E"));
+        pagingFifthButton.setTextColor(Color.parseColor("#8E8E8E"));
     }
 }
