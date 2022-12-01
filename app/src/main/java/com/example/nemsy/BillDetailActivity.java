@@ -49,7 +49,7 @@ public class BillDetailActivity extends AppCompatActivity {
     private EditText comment;
     private ScrollView scrollView;
     String billId;
-    CommentAdapter adapter;
+    BillCommentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +122,7 @@ public class BillDetailActivity extends AppCompatActivity {
         // recyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new CommentAdapter();
+        adapter = new BillCommentAdapter();
         recyclerView.setAdapter(adapter);
 
         // 뒤로가기 버튼
@@ -138,6 +138,7 @@ public class BillDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new Thread(() -> {
+                    Log.d("댓글 작성 내용", comment.getText().toString());
                     postRequest(comment.getText().toString());
                 }).start();
                 comment.getText().clear();
@@ -210,6 +211,7 @@ public class BillDetailActivity extends AppCompatActivity {
 
             String url = "http://54.250.154.173:8080/api/bill/"+billId+"/"+authorId+"/comments";
             String strBody = String.format("{\"content\" : \"%s\"}", content);
+            Log.d("요청 body", strBody);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
 
             okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(url).post(requestBody);
@@ -239,7 +241,7 @@ public class BillDetailActivity extends AppCompatActivity {
 
         adapter.clear();
         for(int i=0; i<commentResult.commentList.size(); i++) {
-            Comment comment = commentResult.commentList.get(i);
+            BillComment comment = commentResult.commentList.get(i);
             adapter.addItem(comment);
         }
         adapter.notifyDataSetChanged();

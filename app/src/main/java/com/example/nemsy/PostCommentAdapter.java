@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
-    ArrayList<Comment> items = new ArrayList<Comment>();
+public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.ViewHolder> {
+    ArrayList<PostComment> items = new ArrayList<PostComment>();
 
     @NonNull
     @Override
@@ -24,7 +24,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        Comment item = items.get(position);
+        PostComment item = items.get(position);
         viewHolder.setItem(item);
     }
 
@@ -33,19 +33,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return items.size();
     }
 
-    public void addItem(Comment item) {
+    public void addItem(PostComment item) {
         items.add(item);
     }
 
-    public void setItems(ArrayList<Comment> items) {
+    public void setItems(ArrayList<PostComment> items) {
         this.items = items;
     }
 
-    public Comment getItem(int position) {
+    public PostComment getItem(int position) {
         return items.get(position);
     }
 
-    public Comment setItem(int position, Comment item) {
+    public PostComment setItem(int position, PostComment item) {
         return items.set(position, item);
     }
 
@@ -64,7 +64,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             content = itemView.findViewById(R.id.comment_content);
         }
 
-        public void setItem(Comment item) {
+        public void setItem(PostComment item) {
             nickname.setText(item.getUserNickname());
             datetime.setText(item.getModifiedAt());
             content.setText(item.getContent());

@@ -6,15 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CommunityDetailActivity extends AppCompatActivity {
     private ImageButton back_button,likeBtn, dislikeBtn, sendBtn;
@@ -24,7 +19,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
     // 댓글 RecyclerView, Adapter
     private RecyclerView recyclerView;
-    private CommentAdapter adapter;
+    private PostCommentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +52,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.comments_recyclerView);
 
         // Adapter, LayoutManager 연결
-        adapter = new CommentAdapter();
+        adapter = new PostCommentAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
