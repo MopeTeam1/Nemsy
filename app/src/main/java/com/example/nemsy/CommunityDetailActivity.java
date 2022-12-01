@@ -2,6 +2,7 @@ package com.example.nemsy;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,10 +12,18 @@ import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.IOException;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +34,15 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class CommunityDetailActivity extends AppCompatActivity {
-    private ImageButton back_button,like_button, sendBtn;
+    private ImageButton back_button,likeBtn, sendBtn;
     private TextView title, writer, writtenDate, content, likeNum, dislikeNum;
     private boolean isLiked, isDisliked;
-    private Long postId;
     private String isLikeClicked;
+    private int likeCount;
+    private Long postId;
+    private EditText comment;
+    private NestedScrollView nestedScrollView;
+
     // 댓글 RecyclerView, Adapter
     private RecyclerView recyclerView;
     private CommentAdapter adapter;
@@ -43,7 +56,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         actionBar.hide();
 
         back_button = (ImageButton) findViewById(R.id.back_button);
-        like_button = (ImageButton) findViewById(R.id.like_button);
+        likeBtn = (ImageButton) findViewById(R.id.like_button);
         // communityBtn = (ImageButton) findViewById(R.id.community_icon);
         sendBtn = (ImageButton) findViewById(R.id.send_button);
 
@@ -54,7 +67,11 @@ public class CommunityDetailActivity extends AppCompatActivity {
         likeNum = (TextView) findViewById(R.id.like_num);
         dislikeNum = (TextView) findViewById(R.id.dislike_num);
 
+        comment = (EditText) findViewById(R.id.comment);
+
         Intent inIntent = getIntent();
+        postId = inIntent.getLongExtra("postId", -1);
+
         title.setText(inIntent.getStringExtra("title"));
         content.setText(inIntent.getStringExtra("content"));
         writer.setText(inIntent.getStringExtra("author"));
@@ -69,6 +86,30 @@ public class CommunityDetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+        new Thread(() -> {
+            getLike();
+        }).start();
+
+        likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                like_button.setVisibility(View.INVISIBLE);
+//                like_button2.setVisibility(View.VISIBLE);
+                Log.d("postLike:", "isLikeClicked" + isLikeClicked);
+                if (isLikeClicked.equals("false")) {
+                    new Thread(() -> {
+                        postLike();
+                        isLikeClicked="true";
+                    }).start();
+                } else{
+                    new Thread(() -> {
+                        deleteLike();
+                        isLikeClicked="false";
+                    }).start();
+                }
+            }
+        });
+
         // 뒤로가기
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +120,6 @@ public class CommunityDetailActivity extends AppCompatActivity {
     private void getLike(){
         SharedPreferences pref = getSharedPreferences("person_info", 0);
         String userId = pref.getString("currUID", "");
-        postId = inIntent.getLongExtra("postId", -1);
         try{
             OkHttpClient client = new OkHttpClient();
             String strURL = String.format("http://54.250.154.173:8080/api/board/%s/%s/likes", postId, userId);
@@ -94,7 +134,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
             if(response.isSuccessful()) {
                 ResponseBody body = response.body();
                 isLikeClicked = body.string();
-                Log.d("getLike","responseString" + isLikeClicked);
+                Log.d("getLike","isLikeClicked" + isLikeClicked);
                 body.close();
             }
         } catch (IOException e) {
@@ -107,7 +147,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         String userId = pref.getString("currUID", "");
         try{
             OkHttpClient client = new OkHttpClient();
-            String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/likes", billId,userId);
+            String strURL = String.format("http://54.250.154.173:8080/api/board/%s/%s/likes", postId, userId);
             String strBody = "{}";
             Log.d("postLike","strURL" + strURL);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
@@ -130,7 +170,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         String userId = pref.getString("currUID", "");
         try{
             OkHttpClient client = new OkHttpClient();
-            String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/likes", billId,userId);
+            String strURL = String.format("http://54.250.154.173:8080/api/board/%s/%s/likes", postId, userId);
             String strBody = "{}";
             Log.d("deleteLike","strURL" + strURL);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
@@ -146,5 +186,43 @@ public class CommunityDetailActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // 댓글 전송버튼
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Thread(() -> {
+                    // postRequest(comment.getText().toString());
+                }).start();
+                comment.getText().clear();
+            }
+        });
     }
+
+
+    // 댓글 가져오기
+//    public void getRequest(){
+//        String url = "http://54.250.154.173:8080/api/community/"+title+"/comments";
+//        Log.d("게시글 title", title);
+//        Log.d("게시글 url", url);
+//
+//        StringRequest request = new StringRequest(
+//                Request.Method.GET,
+//                url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d("응답", response);
+//                        // processResponse(response);
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.d("에러", error.getMessage());
+//                    }
+//                }
+//           )
+//    }
+
 }
