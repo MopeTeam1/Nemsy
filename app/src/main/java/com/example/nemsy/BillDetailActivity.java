@@ -192,7 +192,6 @@ public class BillDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new Thread(() -> {
-                    Log.d("댓글 작성 내용", comment.getText().toString());
                     postRequest(comment.getText().toString());
                 }).start();
                 comment.getText().clear();
@@ -408,7 +407,6 @@ public class BillDetailActivity extends AppCompatActivity {
 
             String url = "http://54.250.154.173:8080/api/bill/"+billId+"/"+authorId+"/comments";
             String strBody = String.format("{\"content\" : \"%s\"}", content);
-            Log.d("요청 body", strBody);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
 
             okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(url).post(requestBody);
