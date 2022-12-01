@@ -1,6 +1,7 @@
 package com.example.nemsy;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -185,6 +186,13 @@ public class PostListFragment extends Fragment {
         @Override
         public void onClick(View view) {
             nowPageNum = Integer.parseInt(((AppCompatButton)view).getText().toString());
+            AppCompatButton selected = (AppCompatButton)view;
+            pagingFirstButton.setTextColor(Color.parseColor("#8E8E8E"));
+            pagingSecondButton.setTextColor(Color.parseColor("#8E8E8E"));
+            pagingThirdButton.setTextColor(Color.parseColor("#8E8E8E"));
+            pagingFourthButton.setTextColor(Color.parseColor("#8E8E8E"));
+            pagingFifthButton.setTextColor(Color.parseColor("#8E8E8E"));
+            selected.setTextColor(Color.parseColor("#000000"));
 
             // 게시글 가져오는 코드
             new Thread(() -> {
@@ -197,5 +205,10 @@ public class PostListFragment extends Fragment {
         for (int i=0; i<5; i++) {
             pagingButtonList[i].setText(String.valueOf(nowPageRange*5+i+1));
         }
+        pagingFirstButton.setTextColor(Color.parseColor("#000000"));
+        pagingSecondButton.setTextColor(Color.parseColor("#8E8E8E"));
+        pagingThirdButton.setTextColor(Color.parseColor("#8E8E8E"));
+        pagingFourthButton.setTextColor(Color.parseColor("#8E8E8E"));
+        pagingFifthButton.setTextColor(Color.parseColor("#8E8E8E"));
     }
 }
