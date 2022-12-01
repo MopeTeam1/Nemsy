@@ -35,6 +35,8 @@ public class CommunityDetailActivity extends AppCompatActivity {
     private ImageButton back_button,likeBtn, dislikeBtn, sendBtn;
     private TextView title, writer, writtenDate, content, likeNum, dislikeNum;
     private boolean isLiked, isDisliked;
+    private int likeCount;
+    private Long postId;
     private EditText comment;
     private NestedScrollView nestedScrollView;
 
@@ -65,6 +67,14 @@ public class CommunityDetailActivity extends AppCompatActivity {
         comment = (EditText) findViewById(R.id.comment);
 
         Intent inIntent = getIntent();
+
+
+        // 이거 쓰시면 됩니다.
+        postId = inIntent.getLongExtra("postId", -1);
+
+        //
+
+
         title.setText(inIntent.getStringExtra("title"));
         content.setText(inIntent.getStringExtra("content"));
         writer.setText(inIntent.getStringExtra("author"));
@@ -103,32 +113,29 @@ public class CommunityDetailActivity extends AppCompatActivity {
     }
 
 
-
     // 댓글 가져오기
-    public void getRequest(){
-        String url = "http://54.250.154.173:8080/api/community/"+title+"/comments";
-        Log.d("게시글 title", title);
-        Log.d("게시글 url", url);
-
-        StringRequest request = new StringRequest(
-                Request.Method.GET,
-                url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("응답", response);
-                        // processResponse(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("에러", error.getMessage());
-                    }
-                }
-           )
-    }
-
-
+//    public void getRequest(){
+//        String url = "http://54.250.154.173:8080/api/community/"+title+"/comments";
+//        Log.d("게시글 title", title);
+//        Log.d("게시글 url", url);
+//
+//        StringRequest request = new StringRequest(
+//                Request.Method.GET,
+//                url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d("응답", response);
+//                        // processResponse(response);
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.d("에러", error.getMessage());
+//                    }
+//                }
+//           )
+//    }
 
 }

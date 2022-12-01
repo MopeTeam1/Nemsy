@@ -134,8 +134,8 @@ public class PostListFragment extends Fragment {
         String responseString = null;
         try {
             OkHttpClient client = new OkHttpClient();
-            String strURL = String.format("http://10.0.2.2:8080/api/board?page=%d", nowPageNum);
-//            String strURL = String.format("http://54.250.154.173:8080/api/board?page=%d", nowPageNum);
+//            String strURL = String.format("http://10.0.2.2:8080/api/board?page=%d", nowPageNum);
+            String strURL = String.format("http://54.250.154.173:8080/api/board?page=%d", nowPageNum);
             Request.Builder builder = new Request.Builder().url(strURL).get();
             builder.addHeader("Content-type", "application/json");
             Request request = builder.build();
@@ -163,7 +163,8 @@ public class PostListFragment extends Fragment {
                 String author = jsonObject.getString("authorNickname");
                 String createdAt = jsonObject.getString("createdAt");
                 int likeCount = jsonObject.getInt("likeCount");
-                data = new Post(title, content, author, createdAt, likeCount);
+                Long postId = jsonObject.getLong("postId");
+                data = new Post(title, content, author, createdAt, likeCount, postId);
                 adapter.addItem(data);
                 Log.d("jsonObject :", jsonObject.toString());
                 setData();
