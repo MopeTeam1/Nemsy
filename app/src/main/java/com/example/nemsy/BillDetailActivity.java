@@ -42,6 +42,7 @@ import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 public class BillDetailActivity extends AppCompatActivity {
     private ImageButton back_button, send_button;
@@ -244,4 +245,15 @@ public class BillDetailActivity extends AppCompatActivity {
         }
         adapter.notifyDataSetChanged();
     }
+
+    //법률안 가져오기
+    public void GET(String billId, int dislike, int like){
+        /*
+        try{
+            OkHttpClient client = new OkHttpClient();
+            String strURL = "http://54.250.154.173:8080/api/bill/"+billId;
+            String strBody = String.format("{\"bill\" : \"%s\"}","{\"dislikeCount\" : \"%d\"}","{\"likeCount\" : \"%d\"}", billId, dislike, like);
+            }
+         */
+        }
 }
