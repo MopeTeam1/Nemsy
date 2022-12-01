@@ -1,20 +1,20 @@
 package com.example.nemsy;
 
-public class Comment {
+public class PostComment {
     Long id;
     String content;
     String userId;
     String userNickname;
-    String billId;
+    String postId;
     String createdAt;
     String modifiedAt;
 
-    public Comment(Long id, String content, String userId, String userNickname, String billId, String createdAt, String modifiedAt) {
+    public PostComment(Long id, String content, String userId, String userNickname, String postId, String createdAt, String modifiedAt) {
         this.id = id;
         this.content = content;
         this.userId = userId;
         this.userNickname = userNickname;
-        this.billId = billId;
+        this.postId = postId;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
@@ -35,8 +35,8 @@ public class Comment {
         return userNickname;
     }
 
-    public String getBillId() {
-        return billId;
+    public String getPostId() {
+        return postId;
     }
 
     public String getCreatedAt() {

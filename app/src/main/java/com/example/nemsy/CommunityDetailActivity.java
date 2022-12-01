@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,15 +17,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.IOException;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
-
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -45,7 +35,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
     // 댓글 RecyclerView, Adapter
     private RecyclerView recyclerView;
-    private CommentAdapter adapter;
+    private PostCommentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +71,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.comments_recyclerView);
 
         // Adapter, LayoutManager 연결
-        adapter = new CommentAdapter();
+        adapter = new PostCommentAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
