@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommunityDetailActivity extends AppCompatActivity {
-    private ImageButton back_button,likeBtn, dislikeBtn, sendBtn;
+    private ImageButton back_button,like_button, sendBtn;
     private TextView title, writer, writtenDate, content, likeNum, dislikeNum;
     private boolean isLiked, isDisliked;
 
@@ -35,8 +35,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         actionBar.hide();
 
         back_button = (ImageButton) findViewById(R.id.back_button);
-        likeBtn = (ImageButton) findViewById(R.id.like_button);
-        dislikeBtn = (ImageButton) findViewById(R.id.dislike_button);
+        like_button = (ImageButton) findViewById(R.id.like_button);
         // communityBtn = (ImageButton) findViewById(R.id.community_icon);
         sendBtn = (ImageButton) findViewById(R.id.send_button);
 
