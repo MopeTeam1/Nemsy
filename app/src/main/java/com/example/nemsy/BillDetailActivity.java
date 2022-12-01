@@ -45,18 +45,25 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class BillDetailActivity extends AppCompatActivity {
-    private ImageButton back_button, send_button;
+    private ImageButton back_button, send_button, like_button, like_button2, dislike_button;
     private TextView bill_name, propose, all_propose, age, propose_date, status, bill_content;
     private EditText comment;
     private ScrollView scrollView;
     String billId;
     CommentAdapter adapter;
+    private String responseString;
+    private int likeCount;
+    private String isLikeClicked;
+    private String isDisLikeClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill_detail);
 
+        like_button = (ImageButton) findViewById(R.id.like_button);
+        like_button2 = (ImageButton) findViewById(R.id.like_button2);
+        dislike_button = (ImageButton) findViewById(R.id.dislike_button);
         back_button = (ImageButton) findViewById(R.id.back_button);
         bill_name = (TextView) findViewById(R.id.bill_name);
         propose = (TextView) findViewById(R.id.propose);
@@ -126,6 +133,52 @@ public class BillDetailActivity extends AppCompatActivity {
         adapter = new CommentAdapter();
         recyclerView.setAdapter(adapter);
 
+        new Thread(() -> {
+            getLike();
+        }).start();
+
+        new Thread(() -> {
+            getDisLike();
+        }).start();
+
+        like_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                like_button.setVisibility(View.INVISIBLE);
+//                like_button2.setVisibility(View.VISIBLE);
+                Log.d("postLike:", "isLikeClicked" + isLikeClicked);
+                if (isLikeClicked.equals("false")) {
+                    new Thread(() -> {
+                        postLike();
+                        isLikeClicked="true";
+                    }).start();
+                } else{
+                    new Thread(() -> {
+                        deleteLike();
+                        isLikeClicked="false";
+                    }).start();
+                }
+            }
+        });
+
+        dislike_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("postDisLike:", "isDisLikeClicked" + isDisLikeClicked);
+                if (isDisLikeClicked.equals("false")) {
+                    new Thread(() -> {
+                        postDisLike();
+                        isDisLikeClicked="true";
+                    }).start();
+                } else{
+                    new Thread(() -> {
+                        deleteDisLike();
+                        isDisLikeClicked="false";
+                    }).start();
+                }
+            }
+        });
+
         // 뒤로가기 버튼
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +197,7 @@ public class BillDetailActivity extends AppCompatActivity {
                 comment.getText().clear();
             }
         });
+
     }
 
     // 크롤링한 데이터 set
@@ -199,6 +253,148 @@ public class BillDetailActivity extends AppCompatActivity {
         };
         request.setShouldCache(false);
         AppHelper.requestQueue.add(request);
+    }
+
+    private void getLike(){
+        SharedPreferences pref = getSharedPreferences("person_info", 0);
+        String userId = pref.getString("currUID", "");
+        try{
+            OkHttpClient client = new OkHttpClient();
+            String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/likes", billId, userId);
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).get();
+            Log.d("getLike","billId: " + billId);
+            Log.d("getLike","strURL" + strURL);
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            Log.d("getLike","request: " +request);
+            okhttp3.Response response = client.newCall(request).execute();
+            Log.d("getLike","response: " +response);
+            if(response.isSuccessful()) {
+                ResponseBody body = response.body();
+                isLikeClicked = body.string();
+                Log.d("getLike","responseString" + isLikeClicked);
+                body.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getDisLike() {
+        SharedPreferences pref = getSharedPreferences("person_info", 0);
+        String userId = pref.getString("currUID", "");
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/dislikes", billId, userId);
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).get();
+            Log.d("getDisLike", "billId: " + billId);
+            Log.d("getDisLike", "strURL" + strURL);
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            Log.d("getDisLike", "request: " + request);
+            okhttp3.Response response = client.newCall(request).execute();
+            Log.d("getDisLike", "response: " + response);
+            if (response.isSuccessful()) {
+                ResponseBody body = response.body();
+                isDisLikeClicked = body.string();
+                Log.d("getDisLike", "responseString" + isDisLikeClicked);
+                body.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void postLike(){
+        SharedPreferences pref = getSharedPreferences("person_info", 0);
+        String userId = pref.getString("currUID", "");
+        try{
+            OkHttpClient client = new OkHttpClient();
+            String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/likes", billId,userId);
+            String strBody = "{}";
+            Log.d("postLike","strURL" + strURL);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).post(requestBody);
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            Log.d("postLike","request: " +request);
+            okhttp3.Response response = client.newCall(request).execute();
+            Log.d("postLike","response: " +response);
+            if(response.isSuccessful()) {
+                Log.d("postLike", " response: success");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void postDisLike(){
+        SharedPreferences pref = getSharedPreferences("person_info", 0);
+        String userId = pref.getString("currUID", "");
+        try{
+            OkHttpClient client = new OkHttpClient();
+            String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/dislikes", billId,userId);
+            String strBody = "{}";
+            Log.d("postDisLike","strURL" + strURL);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).post(requestBody);
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            Log.d("postDisLike","request: " +request);
+            okhttp3.Response response = client.newCall(request).execute();
+            Log.d("postDisLike","response: " +response);
+            if(response.isSuccessful()) {
+                Log.d("postDisLike", " response: success");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteLike(){
+        SharedPreferences pref = getSharedPreferences("person_info", 0);
+        String userId = pref.getString("currUID", "");
+        try{
+            OkHttpClient client = new OkHttpClient();
+            String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/likes", billId,userId);
+            String strBody = "{}";
+            Log.d("deleteLike","strURL" + strURL);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).delete();
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            Log.d("deleteLike","request: " +request);
+            okhttp3.Response response = client.newCall(request).execute();
+            Log.d("deleteLike","response: " +response);
+            if(response.isSuccessful()) {
+                Log.d("deleteLike", " response: success");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteDisLike(){
+        SharedPreferences pref = getSharedPreferences("person_info", 0);
+        String userId = pref.getString("currUID", "");
+        try{
+            OkHttpClient client = new OkHttpClient();
+            String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/dislikes", billId,userId);
+            String strBody = "{}";
+            Log.d("deleteDisLike","strURL" + strURL);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).delete();
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            Log.d("deleteDisLike","request: " +request);
+            okhttp3.Response response = client.newCall(request).execute();
+            Log.d("deleteDisLike","response: " +response);
+            if(response.isSuccessful()) {
+                Log.d("deleteDisLike", " response: success");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // 댓글 작성
