@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -20,7 +21,8 @@ public class CommunityDetailActivity extends AppCompatActivity {
     private ImageButton back_button,likeBtn, dislikeBtn, sendBtn;
     private TextView title, writer, writtenDate, content, likeNum, dislikeNum;
     private boolean isLiked, isDisliked;
-
+    private int likeCount;
+    private Long postId;
 
     // 댓글 RecyclerView, Adapter
     private RecyclerView recyclerView;
@@ -48,6 +50,14 @@ public class CommunityDetailActivity extends AppCompatActivity {
         dislikeNum = (TextView) findViewById(R.id.dislike_num);
 
         Intent inIntent = getIntent();
+
+
+        // 이거 쓰시면 됩니다.
+        postId = inIntent.getLongExtra("postId", -1);
+
+        //
+
+
         title.setText(inIntent.getStringExtra("title"));
         content.setText(inIntent.getStringExtra("content"));
         writer.setText(inIntent.getStringExtra("author"));

@@ -6,13 +6,15 @@ public class Post {
     String author;
     String createdAt;
     int likeCount;
+    final Long postId;
 
-    public Post(String title, String content, String author, String createdAt, int likeCount){
+    public Post(String title, String content, String author, String createdAt, int likeCount, Long postId){
         this.title = title;
         this.content = content;
         this.author = author;
         this.createdAt = createdAt;
         this.likeCount = likeCount;
+        this.postId = postId;
     }
 
     public String getTitle() {
@@ -53,5 +55,9 @@ public class Post {
 
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
+    }
+
+    public Long getPostId() {
+        return postId;
     }
 }
