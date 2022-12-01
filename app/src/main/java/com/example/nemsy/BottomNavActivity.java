@@ -73,6 +73,13 @@ public class BottomNavActivity extends AppCompatActivity {
         intent.putExtra("content",post.getContent());
         intent.putExtra("author", post.getAuthor());
         intent.putExtra("createdAt", post.getCreatedAt());
+        intent.putExtra("postId", post.getPostId());
+        intent.putExtra("likeCount", post.getLikeCount());
+        startActivity(intent);
+    }
+
+    public void WriteIntent(){
+        Intent intent= new Intent(getApplicationContext(), WriteActivity.class);
         startActivity(intent);
     }
 }
