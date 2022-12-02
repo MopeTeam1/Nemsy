@@ -220,7 +220,7 @@ public class SignUpActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
 
             String strURL = String.format("http://54.250.154.173:8080/api/user/register/%s", uid);
-            String strBody = String.format("{\"content\" : \"%s\"}", content);
+            String strBody = String.format("{\"nickname\" : \"%s\"}", nickname);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
             Request.Builder builder = new Request.Builder().url(strURL).post(requestBody);
             builder.addHeader("Content-type", "application/json");

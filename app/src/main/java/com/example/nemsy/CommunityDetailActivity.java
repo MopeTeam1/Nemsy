@@ -101,6 +101,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
         new Thread(() -> {
             getLike();
+            getRequest();
         }).start();
 
         likeBtn.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +128,20 @@ public class CommunityDetailActivity extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {finish();}
+        });
+
+        // 댓글 전송버튼
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String cmt = comment.getText().toString().trim();
+                if (cmt.equals(""))
+                    return;
+                new Thread(() -> {
+                    postRequest(cmt);
+                }).start();
+                comment.getText().clear();
+            }
         });
 
     }
@@ -200,16 +215,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // 댓글 전송버튼
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Thread(() -> {
-                    postRequest(comment.getText().toString());
-                }).start();
-                comment.getText().clear();
-            }
-        });
+
     }
 
     // 댓글 작성하기
@@ -227,7 +233,6 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
             okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strUrl).post(requestBody);
             builder.addHeader("Content-type","application/json");
-
             okhttp3.Request request = builder.build();
             okhttp3.Response response = client.newCall(request).execute();
 
@@ -252,15 +257,19 @@ public class CommunityDetailActivity extends AppCompatActivity {
         try{
             OkHttpClient client = new OkHttpClient();
             String strUrl = "http://54.250.154.173:8080/api/board/"+postId+"/comments";
-            // Log.d("게시글 id", String.valueOf(postId));
-            // Log.d("게시글 url", strUrl);
+             Log.d("게시글 id", String.valueOf(postId));
+             Log.d("게시글 url", strUrl);
             Request.Builder builder = new Request.Builder().url(strUrl).get();
             builder.addHeader("Content-type", "application/json");
             Request request = builder.build();
             Response response = client.newCall(request).execute();
-
+            Log.d("response ", response.toString());
             if (response.isSuccessful()) {
+                Log.d("http ", "success 11");
+
                 ResponseBody body = response.body();
+                Log.d("http ", "success 12");
+
                 responseString = body.string();
                 body.close();
             }
@@ -273,6 +282,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
             JSONArray jsonArray = new JSONArray(responseString);
             PostComment data;
             adapter.clear();
+            Log.d("http ", "success 13");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Long id = jsonObject.getLong("id");
@@ -282,9 +292,12 @@ public class CommunityDetailActivity extends AppCompatActivity {
                 Long postId = jsonObject.getLong("postId");
                 String createdAt = jsonObject.getString("createdAt");
                 String modifiedAt = jsonObject.getString("modifiedAt");
+                Log.d("http ", "success 14");
 
                 data = new PostComment(id,content, userId, userNickname, postId, createdAt, modifiedAt );
                 adapter.addItem(data);
+                Log.d("http ", "success 15");
+
                 setData();
 
                 // Log.d("jsonObject :", jsonObject.toString());
@@ -300,6 +313,8 @@ public class CommunityDetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 adapter.notifyDataSetChanged();
+                Log.d("http ", "success 16");
+
             }
         });
     }
