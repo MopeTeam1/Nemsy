@@ -1,5 +1,11 @@
 package com.example.nemsy;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,12 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -148,15 +148,28 @@ public class BillDetailActivity extends AppCompatActivity {
         like_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                like_button.setVisibility(View.INVISIBLE);
-//                like_button2.setVisibility(View.VISIBLE);
                 Log.d("postLike:", "isLikeClicked" + isLikeClicked);
-                if (isLikeClicked.equals("false")) {
+                if ((isLikeClicked.equals("false")) && (isDisLikeClicked.equals("false"))) {
+                    like_button.setSelected(true);
+//                    likeNum.setText(String.valueOf(likeCount++));
                     new Thread(() -> {
                         postLike();
                         isLikeClicked="true";
                     }).start();
+                } else if((isLikeClicked.equals("false")) && (isDisLikeClicked.equals("true"))){
+                    like_button.setSelected(true);
+                    dislike_button.setSelected(false);
+//                    dislikeNum.setText(String.valueOf(dislikeCount--));
+//                    likeNum.setText(String.valueOf(likeCount++));
+                    new Thread(() -> {
+                        postLike();
+                        deleteDisLike();
+                        isLikeClicked="true";
+                        isDisLikeClicked="false";
+                    }).start();
                 } else{
+                    like_button.setSelected(false);
+//                    dislikeNum.setText(String.valueOf(dislikeCount--));
                     new Thread(() -> {
                         deleteLike();
                         isLikeClicked="false";
@@ -169,12 +182,29 @@ public class BillDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("postDisLike:", "isDisLikeClicked" + isDisLikeClicked);
-                if (isDisLikeClicked.equals("false")) {
+//                String likeNumber = likeNum.getText().toString().trim();
+//                String disLikeNumber = dislikeNum.getText().toString().trim();
+                if ((isDisLikeClicked.equals("false"))&&(isLikeClicked.equals("false"))){
+                    dislike_button.setSelected(true);
+//                    dislikeNum.setText(String.valueOf(dislikeCount++));
                     new Thread(() -> {
                         postDisLike();
                         isDisLikeClicked="true";
                     }).start();
-                } else{
+                } else if((isDisLikeClicked.equals("false"))&&(isLikeClicked.equals("true"))){
+                    dislike_button.setSelected(true);
+                    like_button.setSelected(false);
+//                    dislikeNum.setText(String.valueOf(dislikeCount++));
+//                    likeNum.setText(String.valueOf(likeCount--));
+                    new Thread(() -> {
+                        postDisLike();
+                        deleteLike();
+                        isDisLikeClicked="true";
+                        isLikeClicked="false";
+                    }).start();
+                }else{
+                    dislike_button.setSelected(false);
+//                    dislikeNum.setText(String.valueOf(dislikeCount--));
                     new Thread(() -> {
                         deleteDisLike();
                         isDisLikeClicked="false";
@@ -274,6 +304,7 @@ public class BillDetailActivity extends AppCompatActivity {
                 isLikeClicked = body.string();
                 Log.d("getLike", isLikeClicked);
                 body.close();
+                setLike();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -299,8 +330,10 @@ public class BillDetailActivity extends AppCompatActivity {
                 isDisLikeClicked = body.string();
                 Log.d("getDisLike", isDisLikeClicked);
                 body.close();
+                setDisLike();
             }
         } catch (IOException e) {
+            Log.d("getDisLike", "왜 안됨?");
             e.printStackTrace();
         }
     }
@@ -442,6 +475,44 @@ public class BillDetailActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    public void setLike(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable(){
+                    @Override
+                    public void run() {
+                        Log.d("debug","isLikeClicked"+isLikeClicked);
+                        if (isLikeClicked.equals("false")) {
+                            like_button.setSelected(false);
+                        }else {
+                            like_button.setSelected(true);
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void setDisLike(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable(){
+                    @Override
+                    public void run() {
+                        Log.d("debug","isDisLikeClicked"+isDisLikeClicked);
+                        if (isDisLikeClicked.equals("false")) {
+                            dislike_button.setSelected(false);
+                        }else {
+                            dislike_button.setSelected(true);
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
     //법률안 가져오기
     public void getBill(){
         String responseString = null;
@@ -460,6 +531,7 @@ public class BillDetailActivity extends AppCompatActivity {
                 body.close();
             }
         }
+
         catch(Exception e) {
             e.printStackTrace();
         }

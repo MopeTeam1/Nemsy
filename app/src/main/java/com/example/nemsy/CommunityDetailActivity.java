@@ -144,6 +144,28 @@ public class CommunityDetailActivity extends AppCompatActivity {
             }
         });
 
+        likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                like_button.setVisibility(View.INVISIBLE);
+//                like_button2.setVisibility(View.VISIBLE);
+                Log.d("postLike:", "isLikeClicked" + isLikeClicked);
+                if (isLikeClicked.equals("false")) {
+                    likeBtn.setSelected(true);
+                    new Thread(() -> {
+                        postLike();
+                        isLikeClicked="true";
+                    }).start();
+                } else{
+                    likeBtn.setSelected(false);
+                    new Thread(() -> {
+                        deleteLike();
+                        isLikeClicked="false";
+                    }).start();
+                }
+            }
+        });
+
     }
     private void getLike(){
         SharedPreferences pref = getSharedPreferences("person_info", 0);
@@ -164,6 +186,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                 isLikeClicked = body.string();
                 Log.d("getLike","isLikeClicked" + isLikeClicked);
                 body.close();
+                setLike();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -317,6 +340,25 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void setLike(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable(){
+                    @Override
+                    public void run() {
+                        Log.d("debug","isLikeClicked"+isLikeClicked);
+                        if (isLikeClicked.equals("false")) {
+                            likeBtn.setSelected(false);
+                        }else {
+                            likeBtn.setSelected(true);
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
 }
