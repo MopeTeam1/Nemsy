@@ -87,6 +87,7 @@ public class BillDetailActivity extends AppCompatActivity {
         }
         getRequest();
 
+
         // 액션바 제거
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
@@ -247,13 +248,26 @@ public class BillDetailActivity extends AppCompatActivity {
     }
 
     //법률안 가져오기
-    public void GET(String billId, int dislike, int like){
-        /*
+    public void getBill(String billId, int dislike, int like){
+        String responseString = null;
         try{
             OkHttpClient client = new OkHttpClient();
             String strURL = "http://54.250.154.173:8080/api/bill/"+billId;
-            String strBody = String.format("{\"bill\" : \"%s\"}","{\"dislikeCount\" : \"%d\"}","{\"likeCount\" : \"%d\"}", billId, dislike, like);
+            String strBody = String.format("{\"bill\" : \"%s\", \"dislikeCount\" : \"%d\",\"likeCount\" : \"%d\" }", billId, dislike, like);
+
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).post(requestBody);
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            okhttp3.Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                ResponseBody body = response.body();
+                responseString = body.string();
+                body.close();
             }
-         */
         }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
