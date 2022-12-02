@@ -3,6 +3,7 @@ package com.example.nemsy;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -26,7 +27,11 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.nemsy.model.Post;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -53,6 +58,8 @@ public class CommunityDetailActivity extends AppCompatActivity {
     // 댓글 RecyclerView, Adapter
     private RecyclerView recyclerView;
     private PostCommentAdapter adapter;
+
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,6 +248,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
     // 댓글 가져오기
     public void getRequest(){
+        String responseString = null;
         try{
             OkHttpClient client = new OkHttpClient();
             String strUrl = "http://54.250.154.173:8080/api/board/"+postId+"/comments";
@@ -250,10 +258,50 @@ public class CommunityDetailActivity extends AppCompatActivity {
             builder.addHeader("Content-type", "application/json");
             Request request = builder.build();
             Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ResponseBody body = response.body();
+                responseString = body.string();
+                body.close();
+            }
+
         } catch (Exception e){
             e.printStackTrace();
         }
 
+        try {
+            JSONArray jsonArray = new JSONArray(responseString);
+            PostComment data;
+            adapter.clear();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Long id = jsonObject.getLong("id");
+                String content = jsonObject.getString("content");
+                String userId = jsonObject.getString("userId");
+                String userNickname = jsonObject.getString("userNickname");
+                Long postId = jsonObject.getLong("postId");
+                String createdAt = jsonObject.getString("createdAt");
+                String modifiedAt = jsonObject.getString("modifiedAt");
+
+                data = new PostComment(id,content, userId, userNickname, postId, createdAt, modifiedAt );
+                adapter.addItem(data);
+                setData();
+
+                // Log.d("jsonObject :", jsonObject.toString());
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setData() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
 }

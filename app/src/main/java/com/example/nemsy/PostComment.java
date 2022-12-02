@@ -5,11 +5,11 @@ public class PostComment {
     String content;
     String userId;
     String userNickname;
-    String postId;
+    Long postId;
     String createdAt;
     String modifiedAt;
 
-    public PostComment(Long id, String content, String userId, String userNickname, String postId, String createdAt, String modifiedAt) {
+    public PostComment(Long id, String content, String userId, String userNickname, Long postId, String createdAt, String modifiedAt) {
         this.id = id;
         this.content = content;
         this.userId = userId;
@@ -35,7 +35,7 @@ public class PostComment {
         return userNickname;
     }
 
-    public String getPostId() {
+    public Long getPostId() {
         return postId;
     }
 
