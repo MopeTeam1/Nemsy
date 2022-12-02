@@ -1,6 +1,6 @@
 package com.example.nemsy;
 
-public class Comment {
+public class BillComment {
     Long id;
     String content;
     String userId;
@@ -9,7 +9,7 @@ public class Comment {
     String createdAt;
     String modifiedAt;
 
-    public Comment(Long id, String content, String userId, String userNickname, String billId, String createdAt, String modifiedAt) {
+    public BillComment(Long id, String content, String userId, String userNickname, String billId, String createdAt, String modifiedAt) {
         this.id = id;
         this.content = content;
         this.userId = userId;

@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,8 +28,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.nemsy.model.Post;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -47,13 +49,13 @@ import okhttp3.ResponseBody;
 
 public class BillDetailActivity extends AppCompatActivity {
     private ImageButton back_button, send_button, like_button, like_button2, dislike_button;
-    private TextView bill_name, propose, all_propose, age, propose_date, status, bill_content;
+    private TextView bill_name, propose, all_propose, age, propose_date, status, bill_content, likeNum, dislikeNum;
     private EditText comment;
     private ScrollView scrollView;
     String billId;
-    CommentAdapter adapter;
+    BillCommentAdapter adapter;
     private String responseString;
-    private int likeCount;
+    private int likeCount, dislikeCount;
     private String isLikeClicked;
     private String isDisLikeClicked;
 
@@ -64,6 +66,8 @@ public class BillDetailActivity extends AppCompatActivity {
 
         like_button = (ImageButton) findViewById(R.id.like_button);
         like_button2 = (ImageButton) findViewById(R.id.like_button2);
+        likeNum = (TextView) findViewById(R.id.like_num);
+        dislikeNum = (TextView) findViewById(R.id.dislike_num);
         dislike_button = (ImageButton) findViewById(R.id.dislike_button);
         back_button = (ImageButton) findViewById(R.id.back_button);
         bill_name = (TextView) findViewById(R.id.bill_name);
@@ -94,6 +98,7 @@ public class BillDetailActivity extends AppCompatActivity {
             AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
         }
         getRequest();
+
 
         // 액션바 제거
         ActionBar actionBar = getSupportActionBar();
@@ -131,15 +136,13 @@ public class BillDetailActivity extends AppCompatActivity {
         // recyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new CommentAdapter();
+        adapter = new BillCommentAdapter();
         recyclerView.setAdapter(adapter);
 
         new Thread(() -> {
             getLike();
-        }).start();
-
-        new Thread(() -> {
             getDisLike();
+            getBill();
         }).start();
 
         like_button.setOnClickListener(new View.OnClickListener() {
@@ -267,17 +270,13 @@ public class BillDetailActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
             String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/likes", billId, userId);
             okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).get();
-            Log.d("getLike","billId: " + billId);
-            Log.d("getLike","strURL" + strURL);
             builder.addHeader("Content-type", "application/json");
             okhttp3.Request request = builder.build();
-            Log.d("getLike","request: " +request);
             okhttp3.Response response = client.newCall(request).execute();
-            Log.d("getLike","response: " +response);
             if(response.isSuccessful()) {
                 ResponseBody body = response.body();
                 isLikeClicked = body.string();
-                Log.d("getLike","responseString" + isLikeClicked);
+                Log.d("getLike", isLikeClicked);
                 body.close();
                 setLike();
             }
@@ -303,11 +302,12 @@ public class BillDetailActivity extends AppCompatActivity {
             if (response.isSuccessful()) {
                 ResponseBody body = response.body();
                 isDisLikeClicked = body.string();
-                Log.d("getDisLike", "responseString" + isDisLikeClicked);
+                Log.d("getDisLike", isDisLikeClicked);
                 body.close();
                 setDisLike();
             }
         } catch (IOException e) {
+            Log.d("getDisLike", "왜 안됨?");
             e.printStackTrace();
         }
     }
@@ -443,7 +443,7 @@ public class BillDetailActivity extends AppCompatActivity {
 
         adapter.clear();
         for(int i=0; i<commentResult.commentList.size(); i++) {
-            Comment comment = commentResult.commentList.get(i);
+            BillComment comment = commentResult.commentList.get(i);
             adapter.addItem(comment);
         }
         adapter.notifyDataSetChanged();
@@ -485,18 +485,48 @@ public class BillDetailActivity extends AppCompatActivity {
                 });
             }
         }).start();
-
     }
 
     //법률안 가져오기
-    public void GET(String billId, int dislike, int like){
-        /*
+    public void getBill(){
+        String responseString = null;
         try{
             OkHttpClient client = new OkHttpClient();
             String strURL = "http://54.250.154.173:8080/api/bill/"+billId;
-            String strBody = String.format("{\"bill\" : \"%s\"}","{\"dislikeCount\" : \"%d\"}","{\"likeCount\" : \"%d\"}", billId, dislike, like);
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).get();
+            builder.addHeader("Content-type", "application/json");
+            okhttp3.Request request = builder.build();
+            okhttp3.Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ResponseBody body = response.body();
+                responseString = body.string();
+                Log.d("responseString", responseString);
+                body.close();
             }
-         */
         }
 
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONObject ob = new JSONObject(responseString);
+            likeCount = ob.getInt("likeCount");
+            dislikeCount = ob.getInt("dislikeCount");
+            setData();
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void setData() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                likeNum.setText(String.valueOf(likeCount));
+                dislikeNum.setText(String.valueOf(dislikeCount));
+            }
+        });
+    }
 }
