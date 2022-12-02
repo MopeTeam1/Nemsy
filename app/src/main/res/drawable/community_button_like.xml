@@ -6,11 +6,11 @@
             <padding android:top="0dp" android:bottom="0dp" android:left="0dp" android:right="0dp"/>
             <stroke
                 android:width="2dp"
-                android:color="@color/primary" />
+                android:color="#C5C6CC" />
             <corners android:bottomLeftRadius="90dp" android:bottomRightRadius="90dp"
                 android:topLeftRadius="90dp" android:topRightRadius="90dp"/>
             <solid
-                android:color="@color/primary" />
+                android:color="#C5C6CC" />
         </shape>
 
     </item>
