@@ -36,7 +36,7 @@ public class BillListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_bill_list, container, false);
 
-        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = rootView.findViewById(R.id.billRecyclerView);
         Spinner spinner = rootView.findViewById(R.id.spinner);
 
         if(AppHelper.requestQueue == null) {
@@ -85,7 +85,7 @@ public class BillListFragment extends Fragment {
     }
 
     public void makeRequest() {
-        String url = "https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?KEY=a9d0d8e5551d4a738e4f0e22fa5a0c4d&Type=json&pIndex=1&pSize=100&AGE=" + requestAge;
+        String url = "https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?KEY=a9d0d8e5551d4a738e4f0e22fa5a0c4d&Type=json&pIndex=1&pSize=8&AGE=" + requestAge;
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
