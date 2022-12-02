@@ -246,8 +246,6 @@ public class PostListFragment extends Fragment {
         for (int i=0; i<5; i++) {
             int nowPage = nowPageRange*5+i+1;
             pagingButtonList[i].setText(String.valueOf(nowPage));
-            Log.d("maxPageRange :", String.valueOf(maxPageRange));
-            Log.d("maxPage :", String.valueOf(maxPage));
             if (nowPage > maxPage) {
                 pagingButtonList[i].setVisibility(View.GONE);
             } else {
