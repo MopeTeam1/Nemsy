@@ -199,7 +199,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/like_dislike_layout"
-                android:layout_width="92dp"
+                android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_marginStart="44dp"
                 android:layout_marginTop="16dp"
@@ -210,7 +210,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/like_layout"
-                    android:layout_width="44dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:background="@drawable/button_like"
                     android:orientation="horizontal"
@@ -228,8 +228,7 @@
                         android:background="@drawable/button_toggle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                         />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
                         android:id="@+id/like_button2"
@@ -249,6 +248,8 @@
                         android:id="@+id/like_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:fontFamily="@font/intel_bold"
                         android:textColor="@color/primary"
                         android:textSize="8sp"
@@ -261,12 +262,13 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/dislike_layout"
-                    android:layout_width="44dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="24dp"
+                    android:layout_marginStart="4dp"
                     android:background="@drawable/button_dislike"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/like_layout"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageButton
@@ -279,13 +281,14 @@
                         android:background="@drawable/button_toggle2"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                     />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/dislike_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:fontFamily="@font/intel_bold"
                         android:textColor="@color/primary"
                         android:textSize="8sp"
@@ -316,8 +319,7 @@
                 android:layout_marginEnd="65dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line">
-            </androidx.recyclerview.widget.RecyclerView>
+                app:layout_constraintTop_toBottomOf="@id/line"></androidx.recyclerview.widget.RecyclerView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
