@@ -456,6 +456,7 @@ public class BillDetailActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable(){
                     @Override
                     public void run() {
+                        Log.d("debug","isLikeClicked"+isLikeClicked);
                         if (isLikeClicked.equals("false")) {
                             like_button.setSelected(false);
                         }else {
@@ -474,6 +475,7 @@ public class BillDetailActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable(){
                     @Override
                     public void run() {
+                        Log.d("debug","isDisLikeClicked"+isDisLikeClicked);
                         if (isDisLikeClicked.equals("false")) {
                             dislike_button.setSelected(false);
                         }else {
