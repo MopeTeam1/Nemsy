@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -148,11 +149,13 @@ public class BillDetailActivity extends AppCompatActivity {
 //                like_button2.setVisibility(View.VISIBLE);
                 Log.d("postLike:", "isLikeClicked" + isLikeClicked);
                 if (isLikeClicked.equals("false")) {
+                    like_button.setSelected(true);
                     new Thread(() -> {
                         postLike();
                         isLikeClicked="true";
                     }).start();
                 } else{
+                    like_button.setSelected(false);
                     new Thread(() -> {
                         deleteLike();
                         isLikeClicked="false";
@@ -166,11 +169,13 @@ public class BillDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("postDisLike:", "isDisLikeClicked" + isDisLikeClicked);
                 if (isDisLikeClicked.equals("false")) {
+                    dislike_button.setSelected(true);
                     new Thread(() -> {
                         postDisLike();
                         isDisLikeClicked="true";
                     }).start();
                 } else{
+                    dislike_button.setSelected(false);
                     new Thread(() -> {
                         deleteDisLike();
                         isDisLikeClicked="false";
@@ -274,6 +279,7 @@ public class BillDetailActivity extends AppCompatActivity {
                 isLikeClicked = body.string();
                 Log.d("getLike","responseString" + isLikeClicked);
                 body.close();
+                setLike();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -299,6 +305,7 @@ public class BillDetailActivity extends AppCompatActivity {
                 isDisLikeClicked = body.string();
                 Log.d("getDisLike", "responseString" + isDisLikeClicked);
                 body.close();
+                setDisLike();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -442,6 +449,43 @@ public class BillDetailActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    public void setLike(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable(){
+                    @Override
+                    public void run() {
+                        if (isLikeClicked.equals("false")) {
+                            like_button.setSelected(false);
+                        }else {
+                            like_button.setSelected(true);
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void setDisLike(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable(){
+                    @Override
+                    public void run() {
+                        if (isDisLikeClicked.equals("false")) {
+                            dislike_button.setSelected(false);
+                        }else {
+                            dislike_button.setSelected(true);
+                        }
+                    }
+                });
+            }
+        }).start();
+
+    }
+
     //법률안 가져오기
     public void GET(String billId, int dislike, int like){
         /*
@@ -452,4 +496,5 @@ public class BillDetailActivity extends AppCompatActivity {
             }
          */
         }
+
 }
