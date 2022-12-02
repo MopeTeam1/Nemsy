@@ -40,9 +40,10 @@ public class PostListFragment extends Fragment {
 
     AppCompatButton[] pagingButtonList;
 
-    int nowPageRange;
-    int nowPageNum;
-    Long postCnt;
+    int nowPageRange = 0;
+    int nowPageNum = 1;
+    int maxPage = 30;
+    int maxPageRange = 5;
 
     Handler handler = new Handler();
 
@@ -68,22 +69,23 @@ public class PostListFragment extends Fragment {
         pagingButtonList[3] = pagingFourthButton;
         pagingButtonList[4] = pagingFifthButton;
 
-        nowPageRange = 0;
-        setPagingNum();
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PostAdapter();
         new Thread(() -> {
             getData();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    setPagingNum();
+                    if (maxPageRange == 0)
+                        pagingNextButton.setVisibility(View.INVISIBLE);
+                }
+            });
         }).start();
         recyclerView.setAdapter(adapter);
 
-        pagingBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+
 
         adapter.setOnItemClickListener(new OnPostItemClickListener() {
             @Override
@@ -108,7 +110,12 @@ public class PostListFragment extends Fragment {
                 nowPageRange--;
                 if (nowPageRange <= 0)
                     v.setVisibility(View.INVISIBLE);
+                pagingNextButton.setVisibility(View.VISIBLE);
                 setPagingNum();
+                nowPageNum = nowPageRange * 5 + 1;
+                new Thread(() -> {
+                    getData();
+                }).start();
             }
         });
 
@@ -117,9 +124,15 @@ public class PostListFragment extends Fragment {
             public void onClick(View v) {
                 nowPageRange++;
                 pagingBackButton.setVisibility(View.VISIBLE);
-                if (nowPageRange > 0)
-                    v.setVisibility(View.VISIBLE);
+                if ( nowPageRange == maxPageRange )
+                    v.setVisibility(View.INVISIBLE);
+
                 setPagingNum();
+                nowPageNum = nowPageRange * 5 + 1;
+                Log.d("nowPageNum :", String.valueOf(nowPageNum));
+                new Thread(() -> {
+                    getData();
+                }).start();
             }
         });
 
@@ -135,7 +148,7 @@ public class PostListFragment extends Fragment {
         try {
             OkHttpClient client = new OkHttpClient();
 //            String strURL = String.format("http://10.0.2.2:8080/api/board?page=%d", nowPageNum);
-            String strURL = String.format("http://54.250.154.173:8080/api/board?page=%d", nowPageNum);
+            String strURL = String.format("http://54.250.154.173:8080/api/board?page=%d", nowPageNum - 1);
             Request.Builder builder = new Request.Builder().url(strURL).get();
             builder.addHeader("Content-type", "application/json");
             Request request = builder.build();
@@ -152,7 +165,9 @@ public class PostListFragment extends Fragment {
 
         try {
             JSONObject ob = new JSONObject(responseString);
-            postCnt = ob.getLong("postCnt");
+            maxPage = (int) Math.ceil((double) ob.getLong("postCnt") / 6) ;
+            maxPageRange = (maxPage - 1) / 5;
+
             JSONArray jsonArray = ob.getJSONArray("postList");
             Post data;
             adapter.clear();
@@ -186,7 +201,7 @@ public class PostListFragment extends Fragment {
     private final View.OnClickListener pagingListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            nowPageNum = Integer.parseInt(((AppCompatButton)view).getText().toString()) - 1;
+            nowPageNum = Integer.parseInt(((AppCompatButton)view).getText().toString());
             AppCompatButton selected = (AppCompatButton)view;
             pagingFirstButton.setTextColor(Color.parseColor("#8E8E8E"));
             pagingSecondButton.setTextColor(Color.parseColor("#8E8E8E"));
@@ -203,8 +218,18 @@ public class PostListFragment extends Fragment {
     };
 
     private void setPagingNum() {
+
+
         for (int i=0; i<5; i++) {
-            pagingButtonList[i].setText(String.valueOf(nowPageRange*5+i+1));
+            int nowPage = nowPageRange*5+i+1;
+            pagingButtonList[i].setText(String.valueOf(nowPage));
+            Log.d("maxPageRange :", String.valueOf(maxPageRange));
+            Log.d("maxPage :", String.valueOf(maxPage));
+            if (nowPage > maxPage) {
+                pagingButtonList[i].setVisibility(View.GONE);
+            } else {
+                pagingButtonList[i].setVisibility(View.VISIBLE);
+            }
         }
         pagingFirstButton.setTextColor(Color.parseColor("#000000"));
         pagingSecondButton.setTextColor(Color.parseColor("#8E8E8E"));
