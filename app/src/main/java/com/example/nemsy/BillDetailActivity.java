@@ -148,17 +148,28 @@ public class BillDetailActivity extends AppCompatActivity {
         like_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                like_button.setVisibility(View.INVISIBLE);
-//                like_button2.setVisibility(View.VISIBLE);
                 Log.d("postLike:", "isLikeClicked" + isLikeClicked);
-                if (isLikeClicked.equals("false")) {
+                if ((isLikeClicked.equals("false")) && (isDisLikeClicked.equals("false"))) {
                     like_button.setSelected(true);
+//                    likeNum.setText(String.valueOf(likeCount++));
                     new Thread(() -> {
                         postLike();
                         isLikeClicked="true";
                     }).start();
+                } else if((isLikeClicked.equals("false")) && (isDisLikeClicked.equals("true"))){
+                    like_button.setSelected(true);
+                    dislike_button.setSelected(false);
+//                    dislikeNum.setText(String.valueOf(dislikeCount--));
+//                    likeNum.setText(String.valueOf(likeCount++));
+                    new Thread(() -> {
+                        postLike();
+                        deleteDisLike();
+                        isLikeClicked="true";
+                        isDisLikeClicked="false";
+                    }).start();
                 } else{
                     like_button.setSelected(false);
+//                    dislikeNum.setText(String.valueOf(dislikeCount--));
                     new Thread(() -> {
                         deleteLike();
                         isLikeClicked="false";
@@ -171,14 +182,29 @@ public class BillDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("postDisLike:", "isDisLikeClicked" + isDisLikeClicked);
-                if (isDisLikeClicked.equals("false")) {
+//                String likeNumber = likeNum.getText().toString().trim();
+//                String disLikeNumber = dislikeNum.getText().toString().trim();
+                if ((isDisLikeClicked.equals("false"))&&(isLikeClicked.equals("false"))){
                     dislike_button.setSelected(true);
+//                    dislikeNum.setText(String.valueOf(dislikeCount++));
                     new Thread(() -> {
                         postDisLike();
                         isDisLikeClicked="true";
                     }).start();
-                } else{
+                } else if((isDisLikeClicked.equals("false"))&&(isLikeClicked.equals("true"))){
+                    dislike_button.setSelected(true);
+                    like_button.setSelected(false);
+//                    dislikeNum.setText(String.valueOf(dislikeCount++));
+//                    likeNum.setText(String.valueOf(likeCount--));
+                    new Thread(() -> {
+                        postDisLike();
+                        deleteLike();
+                        isDisLikeClicked="true";
+                        isLikeClicked="false";
+                    }).start();
+                }else{
                     dislike_button.setSelected(false);
+//                    dislikeNum.setText(String.valueOf(dislikeCount--));
                     new Thread(() -> {
                         deleteDisLike();
                         isDisLikeClicked="false";
