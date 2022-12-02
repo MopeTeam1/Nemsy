@@ -17,8 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
@@ -29,7 +27,10 @@ import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class CommunityDetailActivity extends AppCompatActivity {
     private ImageButton back_button,likeBtn, dislikeBtn, sendBtn;
@@ -105,37 +106,62 @@ public class CommunityDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new Thread(() -> {
-                    // postRequest(comment.getText().toString());
+                    postRequest(comment.getText().toString());
                 }).start();
                 comment.getText().clear();
             }
         });
     }
 
+    // 댓글 작성하기
+    public void postRequest(String content){
+        try{
+            OkHttpClient client = new OkHttpClient();
+
+            SharedPreferences preferences = getSharedPreferences("person_info", 0);
+            String userId = preferences.getString("currUID", "");
+
+            String strUrl = "http://54.250.154.173:8080/api/board/"+postId+"/"+userId+"/comment";
+            String strBody = String.format("{\"content\" : \"%s\"}", content);
+
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
+
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strUrl).post(requestBody);
+            builder.addHeader("Content-type","application/json");
+
+            okhttp3.Request request = builder.build();
+            okhttp3.Response response = client.newCall(request).execute();
+
+            if(response.isSuccessful()){
+                getRequest();
+                nestedScrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        nestedScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                });
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     // 댓글 가져오기
-//    public void getRequest(){
-//        String url = "http://54.250.154.173:8080/api/community/"+title+"/comments";
-//        Log.d("게시글 title", title);
-//        Log.d("게시글 url", url);
-//
-//        StringRequest request = new StringRequest(
-//                Request.Method.GET,
-//                url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.d("응답", response);
-//                        // processResponse(response);
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.d("에러", error.getMessage());
-//                    }
-//                }
-//           )
-//    }
+    public void getRequest(){
+        try{
+            OkHttpClient client = new OkHttpClient();
+            String strUrl = "http://54.250.154.173:8080/api/board/"+postId+"/comments";
+            // Log.d("게시글 id", String.valueOf(postId));
+            // Log.d("게시글 url", strUrl);
+            Request.Builder builder = new Request.Builder().url(strUrl).get();
+            builder.addHeader("Content-type", "application/json");
+            Request request = builder.build();
+            Response response = client.newCall(request).execute();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 
 }
