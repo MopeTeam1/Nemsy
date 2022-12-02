@@ -130,7 +130,7 @@ public class PostListFragment extends Fragment {
         return rootView;
     }
 
-    private void getData(){
+    protected void getData(){
         String responseString = null;
         try {
             OkHttpClient client = new OkHttpClient();
