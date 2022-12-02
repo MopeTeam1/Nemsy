@@ -1,5 +1,8 @@
 package com.example.nemsy;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
@@ -46,6 +50,8 @@ public class PostListFragment extends Fragment {
     int maxPageRange = 5;
 
     Handler handler = new Handler();
+
+    public static final int REQUEST_CODE = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -100,7 +106,7 @@ public class PostListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), WriteActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_CODE);
             }
         });
 
@@ -141,6 +147,23 @@ public class PostListFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    // 커뮤니티 글 작성 결과
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE) {
+            Log.d("requestCode :", String.valueOf(requestCode));
+
+            if (resultCode == RESULT_OK) {
+                Log.d("resultCode :", String.valueOf(resultCode));
+                new Thread(() -> {
+                    getData();
+                }).start();
+            }
+        }
     }
 
     protected void getData(){
