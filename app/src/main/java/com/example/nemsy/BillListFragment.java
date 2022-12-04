@@ -81,16 +81,6 @@ public class BillListFragment extends Fragment {
         else
             pagingBackButton.setVisibility(View.VISIBLE);
 
-//        new Thread(() -> {
-//            getData();
-//            handler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                }
-//            });
-//        }).start();
-
         if(AppHelper.requestQueue == null) {
             AppHelper.requestQueue = Volley.newRequestQueue(getContext());
         }
@@ -128,7 +118,7 @@ public class BillListFragment extends Fragment {
                     v.setVisibility(View.INVISIBLE);
                 pagingNextButton.setVisibility(View.VISIBLE);
                 setPagingNum();
-                nowPageNum = nowPageRange * 8 + 1;
+                nowPageNum = nowPageRange * 5 + 1;
                 makeRequest();
             }
         });
@@ -142,7 +132,7 @@ public class BillListFragment extends Fragment {
                     v.setVisibility(View.INVISIBLE);
 
                 setPagingNum();
-                nowPageNum = nowPageRange * 8 + 1;
+                nowPageNum = nowPageRange * 5 + 1;
                 makeRequest();
             }
         });
@@ -230,8 +220,6 @@ public class BillListFragment extends Fragment {
     };
 
     private void setPagingNum() {
-
-
         for (int i=0; i<5; i++) {
             int nowPage = nowPageRange*5+i+1;
             pagingButtonList[i].setText(String.valueOf(nowPage));
