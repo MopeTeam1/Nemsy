@@ -84,8 +84,14 @@ public class PostListFragment extends Fragment {
                 @Override
                 public void run() {
                     setPagingNum();
-                    if (maxPageRange == 0)
+                    if (maxPageRange == 0 || nowPageRange == maxPageRange)
                         pagingNextButton.setVisibility(View.INVISIBLE);
+                    else
+                        pagingNextButton.setVisibility(View.VISIBLE);
+                    if (nowPageRange == 0)
+                        pagingBackButton.setVisibility(View.INVISIBLE);
+                    else
+                        pagingBackButton.setVisibility(View.VISIBLE);
                 }
             });
         }).start();
