@@ -225,8 +225,8 @@ public class BillDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 new Thread(() -> {
                     postRequest(comment.getText().toString());
+                    comment.getText().clear();
                 }).start();
-                comment.getText().clear();
             }
         });
 
@@ -412,16 +412,12 @@ public class BillDetailActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
             String strURL = String.format("http://54.250.154.173:8080/api/bill/%s/%s/dislikes", billId,userId);
             String strBody = "{}";
-            Log.d("deleteDisLike","strURL" + strURL);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
             okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(strURL).delete();
             builder.addHeader("Content-type", "application/json");
             okhttp3.Request request = builder.build();
-            Log.d("deleteDisLike","request: " +request);
             okhttp3.Response response = client.newCall(request).execute();
-            Log.d("deleteDisLike","response: " +response);
             if(response.isSuccessful()) {
-                Log.d("deleteDisLike", " response: success");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -435,9 +431,14 @@ public class BillDetailActivity extends AppCompatActivity {
 
             SharedPreferences prefs = getSharedPreferences("person_info", 0);
             String authorId = prefs.getString("currUID", "");
+            Log.d("authorId",authorId);
 
             String url = "http://54.250.154.173:8080/api/bill/"+billId+"/"+authorId+"/comments";
+            Log.d("url",url);
+
             String strBody = String.format("{\"content\" : \"%s\"}", content);
+            Log.d("strBody",strBody);
+
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody);
 
             okhttp3.Request.Builder builder = new okhttp3.Request.Builder().url(url).post(requestBody);
