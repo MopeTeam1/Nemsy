@@ -92,4 +92,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> im
             date.setText(item.PROPOSE_DT);
         }
     }
+    public void clear() {
+        items.clear();
+    }
 }
