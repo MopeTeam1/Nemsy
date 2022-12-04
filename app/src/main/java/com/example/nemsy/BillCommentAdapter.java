@@ -66,7 +66,9 @@ public class BillCommentAdapter extends RecyclerView.Adapter<BillCommentAdapter.
 
         public void setItem(BillComment item) {
             nickname.setText(item.getUserNickname());
-            datetime.setText(item.getModifiedAt());
+            String date = item.getModifiedAt().substring(0, 10);
+            String time = item.getModifiedAt().substring(11, 16);
+            datetime.setText(date + " " + time);
             content.setText(item.getContent());
         }
     }
