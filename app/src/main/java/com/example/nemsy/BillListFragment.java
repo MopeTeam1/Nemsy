@@ -203,7 +203,8 @@ public class BillListFragment extends Fragment {
     public void processResponse(String response) {
         Gson gson = new Gson();
         BillResponse billResponse = gson.fromJson(response, BillResponse.class);
-        adapter.clear();
+        
+        adapter.clearItem();
         for(int i=0; i<billResponse.nzmimeepazxkubdpn.get(1).row.size(); i++) {
             Bill bill = billResponse.nzmimeepazxkubdpn.get(1).row.get(i);
             adapter.addItem(bill);
