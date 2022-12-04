@@ -55,7 +55,6 @@ public class BillListFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 requestAge = ages.get(i).toString().substring(0, 2);
-                adapter.clearItem();
                 makeRequest();
             }
 
@@ -118,6 +117,7 @@ public class BillListFragment extends Fragment {
         Gson gson = new Gson();
         BillResponse billResponse = gson.fromJson(response, BillResponse.class);
 
+        adapter.clearItem();
         for(int i=0; i<billResponse.nzmimeepazxkubdpn.get(1).row.size(); i++) {
             Bill bill = billResponse.nzmimeepazxkubdpn.get(1).row.get(i);
             adapter.addItem(bill);
