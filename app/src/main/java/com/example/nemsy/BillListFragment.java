@@ -96,7 +96,7 @@ public class BillListFragment extends Fragment {
         }
 
         // spinner
-        for(int i=21; i>=1; i--) {
+        for(int i=21; i>=10; i--) {
             ages.add(i+"대");
         }
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, ages);
