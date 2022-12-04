@@ -166,7 +166,10 @@ public class PostListFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 Log.d("resultCode :", String.valueOf(resultCode));
                 new Thread(() -> {
+                    nowPageNum = 1;
+                    nowPageRange = 0;
                     getData();
+                    setPagingNum();
                 }).start();
             }
         }
