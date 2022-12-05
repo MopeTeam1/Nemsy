@@ -46,9 +46,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
@@ -80,13 +77,13 @@ public class SignUpActivity extends AppCompatActivity {
                     String nickname = getNickname.getText().toString().trim();
 
                     checkAllCondition(isValidEmailForm, isValidPassword, isValidRePassword, isValidNicknameForm);
+
                     if (TF==true){
                         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if(task.isSuccessful()){
-
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
 
                                     String email = user.getEmail();
@@ -123,10 +120,6 @@ public class SignUpActivity extends AppCompatActivity {
                     } else{
                         Toast.makeText(SignUpActivity.this, "입력 형식을 확인해주세요.", Toast.LENGTH_SHORT).show();
                     }
-
-
-
-
             }
         });
 
