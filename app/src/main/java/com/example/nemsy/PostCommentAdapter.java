@@ -66,7 +66,9 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
 
         public void setItem(PostComment item) {
             nickname.setText(item.getUserNickname());
-            datetime.setText(item.getModifiedAt());
+            String date = item.getModifiedAt().substring(0, 10);
+            String time = item.getModifiedAt().substring(11, 16);
+            datetime.setText(date + " " + time);
             content.setText(item.getContent());
         }
     }

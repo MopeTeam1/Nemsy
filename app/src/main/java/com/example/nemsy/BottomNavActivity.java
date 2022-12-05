@@ -24,9 +24,11 @@ public class BottomNavActivity extends AppCompatActivity {
         community_icon = (ImageButton) findViewById(R.id.community_icon);
         bill_icon = (ImageButton) findViewById(R.id.bill_icon);
         mypage_icon = (ImageButton) findViewById(R.id.mypage_icon);
-        billListFragment = (BillListFragment) getSupportFragmentManager().findFragmentById(R.id.bill_list);
+        billListFragment = new BillListFragment();
         mypageFragment = new MypageFragment();
         postListFragment = new PostListFragment();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation, billListFragment).commit();
 
         // 액션바 제거
         ActionBar actionBar = getSupportActionBar();
