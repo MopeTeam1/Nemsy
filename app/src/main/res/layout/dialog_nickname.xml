@@ -34,10 +34,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:text="@string/error"
+        android:text="4자 이상 10자 이내로 입력해주세요"
         android:textColor="@color/warning"
         android:fontFamily="@font/intel"
         android:textSize="7dp"
+        android:visibility="invisible"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"/>
 

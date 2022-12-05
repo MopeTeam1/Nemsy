@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,6 +114,24 @@ public class MypageFragment extends Fragment {
             }
         });
 
+        changeNickname = nicknameDialog.findViewById(R.id.et_changenickname);
+
+        changeNickname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                errorMessage.setVisibility(View.INVISIBLE);
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         logoutDialog = new Dialog(getContext());
         logoutDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         logoutDialog.setContentView(R.layout.dialog_logout);
@@ -164,7 +184,7 @@ public class MypageFragment extends Fragment {
             public void onClick(View view) {
                 String nickname = changeNickname.getText().toString().trim();
                 if (nickname.length() < 4 || nickname.length() >10) {
-                    errorMessage.setText("4자 이상 10자 이내로 입력해주세요");
+                    errorMessage.setVisibility(View.VISIBLE);
                 }
                 else {
                     //회원정보의 닉네임 바꿔주기
