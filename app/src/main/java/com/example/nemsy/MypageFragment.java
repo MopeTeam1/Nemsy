@@ -57,7 +57,7 @@ public class MypageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_mypage, container, false);
 
-        ImageButton btn_changeNickname = rootView.findViewById(R.id.btn_change_nickname);
+        Button btn_changeNickname = rootView.findViewById(R.id.btn_change_nickname);
         Button btn_Logout = rootView.findViewById(R.id.btn_logout);
         tv_nickname = rootView.findViewById(R.id.tv_nickname);
         tv_email = rootView.findViewById(R.id.tv_email);

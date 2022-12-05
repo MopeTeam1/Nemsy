@@ -39,13 +39,6 @@
             android:textColor="@color/black"
             android:textSize="16dp" />
 
-       <ImageButton
-           android:id="@+id/btn_change_nickname"
-           android:layout_width="20dp"
-           android:layout_height="20dp"
-           android:layout_marginLeft="4dp"
-           android:background="@drawable/pen"/>
-
     </LinearLayout>
 
     <TextView
@@ -62,12 +55,12 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
-        android:id="@+id/btn_activity"
+        android:id="@+id/btn_change_nickname"
         android:layout_width="280dp"
         android:layout_height="28dp"
         android:padding="0dp"
         android:layout_marginHorizontal="40dp"
-        android:text="@string/activity"
+        android:text="닉네임 변경"
         android:textSize="14dp"
         android:gravity="center_vertical"
         android:fontFamily="@font/intel"
@@ -87,7 +80,7 @@
         android:background="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_activity" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_change_nickname" />
 
     <Button
         android:id="@+id/btn_logout"
