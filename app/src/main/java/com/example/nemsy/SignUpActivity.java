@@ -34,7 +34,7 @@ import okhttp3.Response;
 public class SignUpActivity extends AppCompatActivity {
     ImageButton buttonBack;
     AppCompatButton signButton;
-    TextView warningEmailOverlap, warningEmailForm, warningNicknameOverlap, warningNicknameForm, warningPassword, warningRePassword;
+    TextView warningEmailOverlap, warningEmailForm, warningNicknameForm, warningPassword, warningRePassword;
     EditText getEmail, getPassword, getNickname, getRePassword;
     String email, nickname, password, rePassword;
     boolean isValidEmailForm = false;
@@ -42,9 +42,13 @@ public class SignUpActivity extends AppCompatActivity {
     boolean isValidPassword = false;
     boolean isValidRePassword = false;
     private FirebaseAuth firebaseAuth;
+    boolean TF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
@@ -68,52 +72,61 @@ public class SignUpActivity extends AppCompatActivity {
 
         signButton.setOnClickListener(new View.OnClickListener() {
 
+
             @Override
             public void onClick(View view) {
-
                     String email = getEmail.getText().toString().trim();
                     String password = getPassword.getText().toString().trim();
                     String nickname = getNickname.getText().toString().trim();
 
-                    firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                    checkAllCondition(isValidEmailForm, isValidPassword, isValidRePassword, isValidNicknameForm);
+                    if (TF==true){
+                        firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if(task.isSuccessful()){
+                                if(task.isSuccessful()){
 
-                                FirebaseUser user = firebaseAuth.getCurrentUser();
+                                    FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                                String email = user.getEmail();
-                                String uid = user.getUid();
+                                    String email = user.getEmail();
+                                    String uid = user.getUid();
 
-                                //해쉬맵 테이블을 파이어베이스 데이터베이스에 저장
-                                HashMap<Object,String> hashmap = new HashMap<>();
+                                    //해쉬맵 테이블을 파이어베이스 데이터베이스에 저장
+                                    HashMap<Object,String> hashmap = new HashMap<>();
 
-                                hashmap.put("uid",uid);
-                                hashmap.put("email",email);
-                                hashmap.put("nickname", nickname);
-                                hashmap.put("password", password);
+                                    hashmap.put("uid",uid);
+                                    hashmap.put("email",email);
+                                    hashmap.put("nickname", nickname);
+                                    hashmap.put("password", password);
 
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference reference = database.getReference("Users");
-                                reference.child(uid).setValue(hashmap);
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    DatabaseReference reference = database.getReference("Users");
+                                    reference.child(uid).setValue(hashmap);
 
-                                // 자체 서버에 유저 등록
-                                new Thread(() -> {
-                                    registerUser(uid, nickname);
-                                }).start();
+                                    // 자체 서버에 유저 등록
+                                    new Thread(() -> {
+                                        registerUser(uid, nickname);
+                                    }).start();
 
-                                Toast.makeText(SignUpActivity.this,"회원가입에 성공하였습니다.",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                                finish();
+                                    Toast.makeText(SignUpActivity.this,"회원가입에 성공하였습니다.",Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
 
-                            }else{
-                                Toast.makeText(SignUpActivity.this, "이미 존재하는 아이디 입니다.", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(SignUpActivity.this, "이미 존재하는 아이디 입니다.", Toast.LENGTH_SHORT).show();
 //                                return; //해당 메소드 진행을 멈추고 빠져나감
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else{
+                        Toast.makeText(SignUpActivity.this, "입력 형식을 확인해주세요.", Toast.LENGTH_SHORT).show();
+                    }
+
+
+
+
             }
         });
 
@@ -126,8 +139,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        // 이메일 중복 검사
-
         // 이메일 형식 검사
         getEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -136,7 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
                     warningEmailForm.setVisibility(View.INVISIBLE);
                 } else {
                     email = getEmail.getText().toString();
-                    isValidEmailForm= Pattern.matches("\\w+@\\w+\\.\\w+(\\.\\w+)?",email);
+                    isValidEmailForm = Pattern.matches("\\w+@\\w+\\.\\w+(\\.\\w+)?",email);
 
                     // 이메일 형식이 일치하지 않을 시 경고 메세지 보이기
                     if(isValidEmailForm){
@@ -211,6 +222,16 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    // 회원 가입 가능 여부 판단
+    private boolean checkAllCondition(boolean isValidEmailForm, boolean isValidPassword, boolean isValidRePassword, boolean isValidNicknameForm){
+        if (!(isValidEmailForm && isValidPassword && isValidRePassword && isValidNicknameForm)){
+            TF = false;
+        }else{
+            TF= true;
+        }
+        return TF;
     }
 
     // 자체 서버에 User 등록
