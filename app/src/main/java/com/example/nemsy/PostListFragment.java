@@ -209,9 +209,12 @@ public class PostListFragment extends Fragment {
                 String content = jsonObject.getString("content");
                 String author = jsonObject.getString("authorNickname");
                 String createdAt = jsonObject.getString("createdAt");
+                String date = createdAt.substring(0, 10);
+                String time = createdAt.substring(11, 16);
+                String datetime = date + " " + time;
                 int likeCount = jsonObject.getInt("likeCount");
                 Long postId = jsonObject.getLong("postId");
-                data = new Post(title, content, author, createdAt, likeCount, postId);
+                data = new Post(title, content, author, datetime, likeCount, postId);
                 adapter.addItem(data);
                 Log.d("jsonObject :", jsonObject.toString());
                 setData();
