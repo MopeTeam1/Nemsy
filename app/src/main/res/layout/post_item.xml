@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="글 제목"
         android:textColor="@color/black"
         android:textSize="14dp"
@@ -25,7 +27,6 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:ellipsize="end"
-        android:ems="20"
         android:maxLines="1"
         android:text="글내용입니다. 글내용입니다.글내용입니다. 글내용입니다.글내용입니다. 글내용입니다."
         android:textColor="@color/gray"
@@ -57,7 +58,7 @@
         android:textColor="@color/gray"
         android:textSize="12dp"
         app:layout_constraintStart_toEndOf="@+id/postAuthor"
-        app:layout_constraintTop_toBottomOf="@id/postContent"/>
+        app:layout_constraintTop_toBottomOf="@id/postContent" />
 
     <View
         android:id="@+id/postLine"
