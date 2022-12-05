@@ -75,6 +75,8 @@ public class SignUpActivity extends AppCompatActivity {
                     String password = getPassword.getText().toString().trim();
                     String nickname = getNickname.getText().toString().trim();
 
+
+
                     firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
