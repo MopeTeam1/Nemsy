@@ -12,7 +12,8 @@
 [박민선](https://github.com/decollzoq) : 팀원-안드로이드 개발(로그인/회원가입 페이지 ui, 커뮤니티 상세 페이지), REST Client 구현  
 
 ### github 주소
-https://github.com/MopeTeam1
+client : https://github.com/MopeTeam1/Nemsy_client
+server : https://github.com/MopeTeam1/Nemsy_server
 
 ### 개발환경
 * 클라이언트 : 안드로이드 스튜디오 / 사용 언어 - JAVA
