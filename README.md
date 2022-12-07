@@ -50,7 +50,7 @@ defaultConfig {
 4. 하단바 : 프래그먼트 화면 구성을 위한 하단바(BottomNavActivity)
 5. 모델 : 게시글(Post), 유저(User), 발의법률안(Bill), 발의법률안 페이지 게시글 댓글 (BillComment), 커뮤니티 페이지 게시글 댓글(PostComment)
 6. 리사이클러뷰 구성 파일 : 발의법률안 목록 페이지 어댑터(BillAdapter), 커뮤니티 목록 페이지 어댑터(PostAdapter), 커뮤니티 목록 페이지 뷰홀더(ViewHolderPost), 발의법률안 상세 페이지 댓글 어댑터(BillCommentAdapter), 커뮤니티 상세 페이지 댓글 어댑터(PostCommentAdapter)
-7. 형식 변환을 위한 파일(Json-> Java Class) : 발의 법률안 Api 응답 결과를 GSon 라이브러리를 사용하여 형식 변환(BillResInfo, BillResponse, BillResResult, BillTable, CommentResult
+7. 형식 변환을 위한 파일(Json-> Java Class) : 발의 법률안 Api 응답 결과를 GSon 라이브러리를 사용하여 형식 변환(BillResInfo, BillResponse, BillResResult, BillTable, CommentResult)
 8. requestQueue를 위한 파일 : AppHelper
 
 ### 페이지 구성-1. 회원
